@@ -240,31 +240,17 @@ body::before {
 }
 
 /*
- * Atlas wordmark — the icon and typeface are rendered as separate
- * CSS-masked layers so we can tint them independently per theme.
- *
- * Dark theme: both layers white.
- * Light theme: icon in Atlas Blue, typeface in Atlas Deep Ink.
+ * Atlas wordmark — the brand asset renders as-is in light mode
+ * (Atlas Blue icon + Deep Ink typeface baked in). In dark mode
+ * we flip the whole lockup to a white silhouette via CSS filter.
  */
-.atlas-icon-tint {
-  display: inline-block;
-  background-color: #FEFEFE;
-  -webkit-mask: url("/atlas-icon.svg") no-repeat center / contain;
-  mask: url("/atlas-icon.svg") no-repeat center / contain;
-  transition: background-color 400ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.atlas-wordmark-img {
+.atlas-wordmark img {
   filter: brightness(0) invert(1);
   transition: filter 400ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-[data-theme="light"] .atlas-icon-tint {
-  background-color: #183DA8;
-}
-
-[data-theme="light"] .atlas-wordmark-img {
-  filter: brightness(0);
+[data-theme="light"] .atlas-wordmark img {
+  filter: none;
 }
 
 .liquid-glass {

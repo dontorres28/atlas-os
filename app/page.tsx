@@ -7,9 +7,11 @@ import { Today } from "@/components/overview/Today";
 import { SquadTrend } from "@/components/overview/SquadTrend";
 import { GettingStarted } from "@/components/overview/GettingStarted";
 import { useRoster } from "@/data/use-roster";
+import { useOnboarding } from "@/data/onboarding";
 
 export default function OverviewPage() {
   const roster = useRoster();
+  const demoMode = useOnboarding((s) => s.demoMode);
   const empty = roster.length === 0;
 
   return (
@@ -31,7 +33,10 @@ export default function OverviewPage() {
             </div>
           </section>
 
-          <SquadTrend />
+          {/* Trend view depends on time-series history — only meaningful once
+              enough data has accumulated. Shown in demo mode; hidden in fresh
+              mode until we ship persistence to back it. */}
+          {demoMode && <SquadTrend />}
         </>
       )}
     </>

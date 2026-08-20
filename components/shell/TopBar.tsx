@@ -6,6 +6,7 @@ import { Search, ChevronDown } from "lucide-react";
 import { AtlasWordmark } from "./AtlasMark";
 import { CommandPalette } from "./CommandPalette";
 import { ThemeToggle } from "./ThemeToggle";
+import { UserBadge } from "./UserBadge";
 
 export function TopBar() {
   const [open, setOpen] = useState(false);
@@ -72,15 +73,3 @@ function ContextPicker({ label }: { label: string }) {
   );
 }
 
-function UserBadge() {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="hidden text-right md:block">
-        <div className="text-[12px] tracking-tightish text-white">J. Baumann</div>
-      </div>
-      <div className="grid h-9 w-9 place-items-center rounded-full border border-hairlineStrong bg-ink/40 text-[11px] font-medium tracking-tightish text-white">
-        JB
-      </div>
-    </div>
-  );
-}

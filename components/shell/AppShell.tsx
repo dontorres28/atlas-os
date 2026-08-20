@@ -9,7 +9,10 @@ import { OnboardingGate } from "./OnboardingGate";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const bare = pathname?.startsWith("/onboarding");
+  const bare =
+    pathname?.startsWith("/onboarding") ||
+    pathname?.startsWith("/login") ||
+    pathname?.startsWith("/auth");
 
   if (bare) {
     return (

@@ -4,55 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-
-type Signal = {
-  key: string;
-  label: string;
-  value: number;
-  radius: number;
-  detail: string;
-  cta: string;
-  href: string;
-};
-
-const SIGNALS: Signal[] = [
-  {
-    key: "performance",
-    label: "How the team is playing",
-    value: 86,
-    radius: 178,
-    detail: "First Team review completion at 94%.",
-    cta: "See performance",
-    href: "/reviews",
-  },
-  {
-    key: "pathway",
-    label: "Who's coming up",
-    value: 78,
-    radius: 156,
-    detail: "3 athletes ready for progression, 2 pathway blockers.",
-    cta: "See pathways",
-    href: "/pathways",
-  },
-  {
-    key: "squad",
-    label: "Team make-up",
-    value: 84,
-    radius: 134,
-    detail: "1 structural gap projected for 2027/28.",
-    cta: "See squad",
-    href: "/squad",
-  },
-  {
-    key: "planning",
-    label: "Where we're heading",
-    value: 81,
-    radius: 112,
-    detail: "6 contracts requiring review.",
-    cta: "See decisions",
-    href: "/decisions",
-  },
-];
+import { useSquadSignals } from "@/data/squad-signals";
 
 const CENTER = 200;
 const START_ANGLE = -135;
@@ -78,12 +30,13 @@ function verdictWord(n: number) {
 }
 
 export function SquadState() {
+  const signals = useSquadSignals();
   const composite = Math.round(
-    SIGNALS.reduce((s, d) => s + d.value, 0) / SIGNALS.length,
+    signals.reduce((s, d) => s + d.value, 0) / signals.length,
   );
 
   const [activeKey, setActiveKey] = useState<string | null>(null);
-  const active = SIGNALS.find((s) => s.key === activeKey);
+  const active = signals.find((s) => s.key === activeKey);
 
   return (
     <section className="grid grid-cols-1 gap-x-16 gap-y-12 pb-16 pt-4 md:grid-cols-12 md:gap-y-0">
@@ -96,7 +49,7 @@ export function SquadState() {
         <div className="relative mx-auto mt-6 aspect-square max-w-[440px]">
           <svg viewBox="0 0 400 400" className="h-full w-full" aria-label="Squad state">
             {/* Track arcs */}
-            {SIGNALS.map((d) => (
+            {signals.map((d) => (
               <path
                 key={`track-${d.key}`}
                 d={arcPath(CENTER, CENTER, d.radius, START_ANGLE, END_ANGLE)}
@@ -108,7 +61,7 @@ export function SquadState() {
             ))}
 
             {/* Filled arcs */}
-            {SIGNALS.map((d) => {
+            {signals.map((d) => {
               const endA = START_ANGLE + (SPAN * d.value) / 100;
               const isActive = activeKey === d.key;
               const isDimmed = activeKey !== null && !isActive;
@@ -161,7 +114,7 @@ export function SquadState() {
         </div>
 
         <ol className="mt-6">
-          {SIGNALS.map((s) => {
+          {signals.map((s) => {
             const isActive = activeKey === s.key;
             return (
               <li key={s.key}>

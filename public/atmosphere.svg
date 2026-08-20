@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Deep royal blue base -->
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0F2A6E"/>
+      <stop offset="45%" stop-color="#0A1E52"/>
+      <stop offset="80%" stop-color="#050C22"/>
+      <stop offset="100%" stop-color="#01030A"/>
+    </linearGradient>
+
+    <!-- Bright cobalt aurora upper-left -->
+    <radialGradient id="aurora" cx="12%" cy="18%" r="80%">
+      <stop offset="0%" stop-color="#4E86EE" stop-opacity="0.95"/>
+      <stop offset="18%" stop-color="#2A5FD8" stop-opacity="0.60"/>
+      <stop offset="42%" stop-color="#153BAE" stop-opacity="0.28"/>
+      <stop offset="70%" stop-color="#0A1F5C" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#040918" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Cyan / turquoise silky highlight, center-upper -->
+    <radialGradient id="cyan" cx="38%" cy="30%" r="30%">
+      <stop offset="0%" stop-color="#7BEEF5" stop-opacity="0.55"/>
+      <stop offset="30%" stop-color="#3AC0EA" stop-opacity="0.30"/>
+      <stop offset="60%" stop-color="#1E6CD8" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+
+    <!-- Deep royal swirl, right-center -->
+    <radialGradient id="rightSwirl" cx="72%" cy="42%" r="42%">
+      <stop offset="0%" stop-color="#2A5FD8" stop-opacity="0.35"/>
+      <stop offset="55%" stop-color="#122E80" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+
+    <!-- Deep violet vortex, lower-center -->
+    <radialGradient id="violet" cx="55%" cy="72%" r="40%">
+      <stop offset="0%" stop-color="#3822A8" stop-opacity="0.32"/>
+      <stop offset="55%" stop-color="#160D48" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+
+    <!-- Center shield: darker patch behind the primary content column,
+         so text and rings don't fight the vibrant swirl -->
+    <radialGradient id="contentShield" cx="50%" cy="52%" r="40%">
+      <stop offset="0%" stop-color="#01030A" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#040914" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+
+    <!-- Bottom vignette pulling to near-black -->
+    <linearGradient id="vignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#040918" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#020509" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Silk flow warp on the aurora + cyan layers -->
+    <filter id="silk" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.006 0.017" numOctaves="2" seed="9"/>
+      <feDisplacementMap in="SourceGraphic" scale="200"/>
+    </filter>
+
+    <!-- Fine dust / grain, blue-cyan tinted -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="2" seed="11" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 0.44
+                             0 0 0 0 0.72
+                             0 0 0 0 1
+                             0 0 0 0.075 0"/>
+    </filter>
+  </defs>
+
+  <!-- Base -->
+  <rect width="1920" height="1200" fill="url(#base)"/>
+
+  <!-- Silky aurora + cyan (warped for the flowing look) -->
+  <g filter="url(#silk)">
+    <rect width="1920" height="1200" fill="url(#aurora)"/>
+    <rect width="1920" height="1200" fill="url(#cyan)"/>
+  </g>
+
+  <!-- Right-side blue swirl -->
+  <rect width="1920" height="1200" fill="url(#rightSwirl)"/>
+
+  <!-- Violet vortex -->
+  <rect width="1920" height="1200" fill="url(#violet)"/>
+
+  <!-- Content shield in the middle (keeps text/rings readable) -->
+  <rect width="1920" height="1200" fill="url(#contentShield)"/>
+
+  <!-- Deep bottom -->
+  <rect width="1920" height="1200" fill="url(#vignette)"/>
+
+  <!-- Grain -->
+  <rect width="1920" height="1200" filter="url(#grain)"/>
+</svg>

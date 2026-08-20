@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Warm gold aurora, upper-left -->
+    <radialGradient id="aurora" cx="18%" cy="15%" r="80%">
+      <stop offset="0%" stop-color="#EFD9A4" stop-opacity="0.85"/>
+      <stop offset="18%" stop-color="#E1BE72" stop-opacity="0.55"/>
+      <stop offset="42%" stop-color="#D0A15A" stop-opacity="0.28"/>
+      <stop offset="70%" stop-color="#B7854A" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#F5F1E7" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Soft cyan-mint highlight -->
+    <radialGradient id="cyan" cx="38%" cy="24%" r="34%">
+      <stop offset="0%" stop-color="#B2E5DB" stop-opacity="0.42"/>
+      <stop offset="35%" stop-color="#89C7BE" stop-opacity="0.22"/>
+      <stop offset="70%" stop-color="#5A9E96" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+
+    <!-- Blue accent, right -->
+    <radialGradient id="rightGlow" cx="82%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#5D7CD8" stop-opacity="0.20"/>
+      <stop offset="55%" stop-color="#3B58A8" stop-opacity="0.09"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+
+    <!-- Warm-blush accent, deep -->
+    <radialGradient id="violet" cx="65%" cy="58%" r="42%">
+      <stop offset="0%" stop-color="#D7A88E" stop-opacity="0.24"/>
+      <stop offset="60%" stop-color="#B78970" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+
+    <!-- Soft shadow, bottom -->
+    <radialGradient id="shadow" cx="60%" cy="105%" r="90%">
+      <stop offset="0%" stop-color="#C6BFA8" stop-opacity="0.55"/>
+      <stop offset="55%" stop-color="#D6D0BA" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+
+    <!-- Bottom vignette -->
+    <linearGradient id="vignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F5F1E7" stop-opacity="0"/>
+      <stop offset="75%" stop-color="#E7E1CE" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#D9D1B6" stop-opacity="0.55"/>
+    </linearGradient>
+
+    <!-- Fine warm grain -->
+    <filter id="grain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.25" numOctaves="2" seed="7" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 0.55
+                             0 0 0 0 0.42
+                             0 0 0 0 0.22
+                             0 0 0 0.06 0"/>
+    </filter>
+
+    <!-- Silk-flow warp on the aurora highlights -->
+    <filter id="silk" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.005 0.014" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="180"/>
+    </filter>
+  </defs>
+
+  <!-- Base warm off-white -->
+  <rect width="1920" height="1200" fill="#F5F1E7"/>
+
+  <!-- Aurora + cyan, warped -->
+  <g filter="url(#silk)">
+    <rect width="1920" height="1200" fill="url(#aurora)"/>
+    <rect width="1920" height="1200" fill="url(#cyan)"/>
+  </g>
+
+  <!-- Right-side distant glow -->
+  <rect width="1920" height="1200" fill="url(#rightGlow)"/>
+
+  <!-- Blush accent -->
+  <rect width="1920" height="1200" fill="url(#violet)"/>
+
+  <!-- Shadow bottom -->
+  <rect width="1920" height="1200" fill="url(#shadow)"/>
+
+  <!-- Vertical vignette -->
+  <rect width="1920" height="1200" fill="url(#vignette)"/>
+
+  <!-- Warm grain overlay -->
+  <rect width="1920" height="1200" filter="url(#grain)"/>
+</svg>

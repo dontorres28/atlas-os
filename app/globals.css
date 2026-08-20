@@ -1,0 +1,331 @@
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+
+  --canvas: #0A131F;
+  --ink: #141E2B;
+  --hairline-raw: #C5CBD8;
+
+  --fg: #F3F4F7;
+  --fg-strong: #FEFEFE;
+  --muted: #676F79;
+
+  --bone-50: #FEFEFE;
+  --bone-100: #F3F4F7;
+  --bone-200: #DDE1EA;
+  --bone-300: #B6BCC8;
+  --bone-400: #8F96A3;
+  --bone-500: #676F79;
+  --bone-600: #4A515C;
+  --bone-700: #2E3541;
+  --bone-800: #1B2230;
+
+  --hairline: rgba(197, 203, 216, 0.08);
+  --hairline-strong: rgba(197, 203, 216, 0.16);
+  --hairline-hi: rgba(197, 203, 216, 0.28);
+
+  --accent: #183DA8;
+  --accent-soft: #2A54CC;
+  --accent-dim: #122F82;
+  --accent-wash: rgba(24, 61, 168, 0.12);
+  --accent-tint: #6D82D1;
+
+  --overlay-hover: rgba(255, 255, 255, 0.028);
+  --overlay-hover-strong: rgba(255, 255, 255, 0.05);
+
+  --atmosphere: url("/atmosphere.svg");
+  --atmosphere-opacity: 0.42;
+
+  --glass-a: rgba(20, 30, 43, 0.72);
+  --glass-b: rgba(10, 19, 31, 0.62);
+  --glass-border: rgba(197, 203, 216, 0.14);
+  --glass-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --canvas: #F5F1E7;
+  --ink: #ECE7D8;
+  --hairline-raw: #141E2B;
+
+  --fg: #141E2B;
+  --fg-strong: #0A131F;
+  --muted: #5A554C;
+
+  --bone-50: #0A131F;
+  --bone-100: #141E2B;
+  --bone-200: #26241F;
+  --bone-300: #3E3A33;
+  --bone-400: #676F79;
+  --bone-500: #8F8A80;
+  --bone-600: #A8A296;
+  --bone-700: #CFC9BC;
+  --bone-800: #E5DFCF;
+
+  --hairline: rgba(20, 30, 43, 0.10);
+  --hairline-strong: rgba(20, 30, 43, 0.20);
+  --hairline-hi: rgba(20, 30, 43, 0.32);
+
+  --accent: #183DA8;
+  --accent-soft: #2A54CC;
+  --accent-dim: #0A215F;
+  --accent-wash: rgba(24, 61, 168, 0.09);
+  --accent-tint: #1F4FBC;
+
+  --overlay-hover: rgba(20, 30, 43, 0.035);
+  --overlay-hover-strong: rgba(20, 30, 43, 0.07);
+
+  --atmosphere: url("/atmosphere-light.svg");
+  --atmosphere-opacity: 0.58;
+
+  --glass-a: rgba(245, 241, 231, 0.72);
+  --glass-b: rgba(236, 231, 216, 0.62);
+  --glass-border: rgba(20, 30, 43, 0.18);
+  --glass-shadow: 0 30px 80px -20px rgba(20, 30, 43, 0.25);
+}
+
+html,
+body {
+  background: var(--canvas);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv11";
+  font-variant-numeric: proportional-nums;
+  transition:
+    background-color 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: var(--canvas);
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--atmosphere);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: var(--atmosphere-opacity);
+  will-change: transform, opacity;
+  animation: atlasAtmosphere 60s ease-in-out infinite alternate;
+  transition: opacity 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes atlasAtmosphere {
+  0% {
+    transform: scale(1.05) translate3d(-1%, -0.5%, 0);
+  }
+  100% {
+    transform: scale(1.05) translate3d(1%, 0.5%, 0);
+  }
+}
+
+::selection {
+  background: var(--accent-wash);
+  color: var(--fg-strong);
+}
+
+.display {
+  font-family: "Satoshi", "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.mono {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.005em;
+}
+
+.label {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.meta {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  color: var(--bone-400);
+}
+
+.text-accent-tint {
+  color: var(--accent-tint);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hairline);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hairline-hi);
+}
+
+/* Entrance animations */
+@keyframes atlasEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes atlasRow {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes atlasFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.atlas-enter {
+  opacity: 0;
+  animation: atlasEnter 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.atlas-row {
+  opacity: 0;
+  animation: atlasRow 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.atlas-float {
+  opacity: 0;
+  animation: atlasFloat 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+
+/*
+ * Atlas wordmark — the icon and typeface are rendered as separate
+ * CSS-masked layers so we can tint them independently per theme.
+ *
+ * Dark theme: both layers white.
+ * Light theme: icon in Atlas Blue, typeface in Atlas Deep Ink.
+ */
+.atlas-icon-tint {
+  display: inline-block;
+  background-color: #FEFEFE;
+  -webkit-mask: url("/atlas-icon.svg") no-repeat center / contain;
+  mask: url("/atlas-icon.svg") no-repeat center / contain;
+  transition: background-color 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.atlas-wordmark-img {
+  filter: brightness(0) invert(1);
+  transition: filter 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-theme="light"] .atlas-icon-tint {
+  background-color: #183DA8;
+}
+
+[data-theme="light"] .atlas-wordmark-img {
+  filter: brightness(0);
+}
+
+.liquid-glass {
+  background: linear-gradient(180deg, var(--glass-a) 0%, var(--glass-b) 100%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  backdrop-filter: blur(28px) saturate(150%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1px rgba(24, 61, 168, 0.04);
+}
+
+/*
+ * Pill-glass — refined surface for segmented controls and the primary nav.
+ * Barely visible container: the sliding pill is the star. Modelled on the
+ * Apple Control Center segmented control.
+ */
+.pill-glass {
+  background: rgba(10, 19, 31, 0.28);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 20px 44px -24px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .pill-glass {
+  background: rgba(20, 30, 43, 0.05);
+  border: 1px solid rgba(20, 30, 43, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 20px 44px -24px rgba(20, 30, 43, 0.18);
+}
+
+/*
+ * Modal surface — fully opaque. No blur, no transparency.
+ */
+.solid-glass {
+  background-color: #131C29;
+  border: 1px solid var(--hairline-strong);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .solid-glass {
+  background-color: #F0EBDD;
+  border: 1px solid rgba(20, 30, 43, 0.16);
+  box-shadow: 0 24px 60px -24px rgba(20, 30, 43, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .atlas-enter,
+  .atlas-row,
+  .atlas-float {
+    opacity: 1;
+    animation: none;
+  }
+}

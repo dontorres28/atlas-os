@@ -118,31 +118,36 @@ export function Today() {
   const items = useTodayItems();
 
   return (
-    <section className="pb-16 pt-4">
-      <div className="text-[11px] font-medium uppercase tracking-[0.22em] text-bone-400">
-        Today
+    <section className="mx-auto max-w-[900px]">
+      <div className="flex items-baseline justify-between border-b border-hairline pb-3">
+        <h2 className="display text-[24px] tracking-tightest text-white">
+          Today
+        </h2>
+        <span className="text-[11px] uppercase tracking-[0.18em] text-bone-500">
+          {items.length === 0
+            ? "All quiet"
+            : `${items.filter((i) => i.tone !== "muted").length} to address`}
+        </span>
       </div>
 
       {items.length === 0 ? (
-        <p className="mt-8 text-[14px] tracking-tightish text-bone-400">
+        <p className="mt-6 text-[14px] tracking-tightish text-bone-400">
           Nothing needs a decision today.
         </p>
       ) : (
-        <ol className="mt-8">
+        <ol className="mt-4 flex flex-col gap-2">
           {items.map((it) => (
             <li key={it.key}>
               <Link
                 href={it.href}
-                className="group grid grid-cols-[16px_1fr] items-baseline gap-4 border-t border-hairline py-5 last:border-b transition-colors duration-300 hover:bg-white/[0.02]"
+                className="content-surface group flex items-center gap-4 px-4 py-3.5 md:px-5"
               >
-                <span className="mt-1">
-                  <StateDot tone={it.tone} size={10} />
-                </span>
-                <div>
-                  <div className="text-[16px] tracking-tightish text-white transition-colors group-hover:text-accent-tint">
+                <StateDot tone={it.tone} size={10} />
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-[15px] tracking-tightish text-white transition-colors group-hover:text-accent-tint">
                     {it.title}
                   </div>
-                  <div className="mt-1 text-[12px] tracking-tightish text-bone-400">
+                  <div className="mt-1 truncate text-[12px] tracking-tightish text-bone-400">
                     {it.detail}
                   </div>
                 </div>

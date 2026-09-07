@@ -84,14 +84,14 @@ export function SquadComposition() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-14">
         {GROUPS.map((g) => {
           const inGroup = rows.filter((a) => g.positions.includes(a.position));
           if (inGroup.length === 0) return null;
           return (
-            <section key={g.key} className="structural-surface atlas-enter p-6 md:p-8">
-              <div className="mb-6 flex items-baseline justify-between">
-                <h2 className="display text-[24px] tracking-tightest text-white">
+            <section key={g.key} className="atlas-enter">
+              <div className="mb-4 flex items-baseline justify-between border-b border-hairline pb-3">
+                <h2 className="display text-[22px] tracking-tightest text-white">
                   {g.label}
                 </h2>
                 <span className="text-[11px] uppercase tracking-[0.18em] text-bone-500">

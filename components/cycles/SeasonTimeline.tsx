@@ -21,61 +21,66 @@ export function SeasonTimeline() {
   const active = cycles.find((c) => c.id === activeId)!;
 
   return (
-    <div>
-      {/* Horizontal timeline */}
-      <div className="relative pb-24 pt-6">
-        <div className="absolute left-6 right-6 top-[54px] h-px bg-hairlineStrong" />
-        <ol className="relative flex items-start gap-8 overflow-x-auto pb-2">
-          {cycles.map((c) => {
-            const isActive = activeId === c.id;
-            const isCurrent = c.status === "Active";
-            return (
-              <li key={c.id} className="min-w-[140px]">
-                <button
-                  onClick={() => setActiveId(c.id)}
-                  onMouseEnter={() => setActiveId(c.id)}
-                  className="group flex w-full flex-col items-start text-left"
-                >
-                  <div className="text-[10px] font-medium uppercase tracking-[0.22em] text-bone-500">
-                    {c.monthLabel}
-                  </div>
-                  <div className="relative mt-4 flex h-[10px] w-full items-center">
-                    <span
-                      className={`h-[10px] w-[10px] rounded-full transition-colors duration-300 ${
-                        isActive
-                          ? "bg-accent"
-                          : isCurrent
-                            ? "bg-white"
-                            : "bg-bone-600 group-hover:bg-bone-400"
-                      }`}
-                    />
-                  </div>
-                  <div
-                    className={`mt-6 text-[15px] tracking-tightish transition-colors duration-300 ${
-                      isActive ? "text-white" : "text-bone-300 group-hover:text-white"
-                    }`}
+    <div className="mx-auto flex max-w-[900px] flex-col gap-6 pb-8">
+      {/* Horizontal timeline strip */}
+      <section className="structural-surface p-6 md:p-8">
+        <h2 className="display text-[24px] tracking-tightest text-white">
+          Timeline
+        </h2>
+        <div className="relative mt-6">
+          <div className="absolute left-2 right-2 top-[26px] h-px bg-hairlineStrong" />
+          <ol className="relative flex items-start gap-6 overflow-x-auto pb-2">
+            {cycles.map((c) => {
+              const isActive = activeId === c.id;
+              const isCurrent = c.status === "Active";
+              return (
+                <li key={c.id} className="min-w-[130px]">
+                  <button
+                    onClick={() => setActiveId(c.id)}
+                    onMouseEnter={() => setActiveId(c.id)}
+                    className="group flex w-full flex-col items-start text-left"
                   >
-                    {c.name}
-                  </div>
-                  <div className="mt-1 text-[11px] tracking-tightish text-bone-500">
-                    {c.season}
-                  </div>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
+                    <div className="text-[10px] font-medium uppercase tracking-[0.22em] text-bone-500">
+                      {c.monthLabel}
+                    </div>
+                    <div className="relative mt-3 flex h-[10px] w-full items-center">
+                      <span
+                        className={`h-[10px] w-[10px] rounded-full transition-colors duration-200 ${
+                          isActive
+                            ? "bg-accent"
+                            : isCurrent
+                              ? "bg-white"
+                              : "bg-bone-600 group-hover:bg-bone-400"
+                        }`}
+                      />
+                    </div>
+                    <div
+                      className={`mt-4 text-[13px] tracking-tightish transition-colors duration-200 ${
+                        isActive ? "text-white" : "text-bone-300 group-hover:text-white"
+                      }`}
+                    >
+                      {c.name}
+                    </div>
+                    <div className="mt-1 text-[11px] tracking-tightish text-bone-500">
+                      {c.season}
+                    </div>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </section>
 
       {/* Selected cycle detail */}
       <AnimatePresence mode="wait">
         <motion.section
           key={active.id}
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -4 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="border-t border-hairline pt-12"
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="structural-surface p-6 md:p-8"
         >
           <CycleDetail cycleId={active.id} />
         </motion.section>

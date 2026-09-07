@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { useSquadSignals } from "@/data/squad-signals";
 
 const CENTER = 200;
@@ -39,14 +38,19 @@ export function SquadState() {
   const active = signals.find((s) => s.key === activeKey);
 
   return (
-    <section className="grid grid-cols-1 gap-x-16 gap-y-12 pb-16 pt-4 md:grid-cols-12 md:gap-y-0">
-      {/* Gauge column */}
-      <div className="md:col-span-7">
-        <div className="text-[11px] font-medium uppercase tracking-[0.22em] text-bone-400">
-          Squad State
-        </div>
+    <section className="structural-surface mx-auto max-w-[900px] p-6 md:p-10">
+      <div className="flex items-baseline justify-between">
+        <h2 className="display text-[24px] tracking-tightest text-white">
+          Squad state
+        </h2>
+        <span className="text-[11px] uppercase tracking-[0.18em] text-bone-500">
+          {verdictWord(composite)}
+        </span>
+      </div>
 
-        <div className="relative mx-auto mt-6 aspect-square max-w-[440px]">
+      <div className="mt-4 grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-12 md:gap-y-0">
+        <div className="md:col-span-7">
+          <div className="relative mx-auto aspect-square max-w-[440px]">
           <svg viewBox="0 0 400 400" className="h-full w-full" aria-label="Squad state">
             {/* Track arcs */}
             {signals.map((d) => (
@@ -107,64 +111,41 @@ export function SquadState() {
         </div>
       </div>
 
-      {/* Signals column */}
-      <div className="md:col-span-5 md:pt-10">
-        <div className="text-[11px] font-medium uppercase tracking-[0.22em] text-bone-400">
-          Signals
-        </div>
-
-        <ol className="mt-6">
-          {signals.map((s) => {
-            const isActive = activeKey === s.key;
-            return (
-              <li key={s.key}>
-                <button
-                  onMouseEnter={() => setActiveKey(s.key)}
-                  onFocus={() => setActiveKey(s.key)}
-                  onClick={() => setActiveKey(isActive ? null : s.key)}
-                  className={`group flex w-full items-baseline justify-between border-t border-hairline py-4 text-left transition-colors duration-300 ${
-                    isActive ? "text-white" : "text-bone-300 hover:text-white"
-                  }`}
-                >
-                  <span className="text-[15px] tracking-tightish">{s.label}</span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-
-        <div
-          className="mt-10 border-t border-hairlineStrong pt-6"
-          onMouseLeave={() => setActiveKey(null)}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active ? active.key : "default"}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {active ? (
-                <div>
-                  <div className="text-[15px] leading-relaxed tracking-tightish text-bone-100">
-                    {active.detail}
-                  </div>
+        <div className="md:col-span-5">
+          <ol className="flex flex-col gap-2">
+            {signals.map((s) => {
+              const isActive = activeKey === s.key;
+              return (
+                <li key={s.key}>
                   <Link
-                    href={active.href}
-                    className="mt-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-accent-tint transition-colors hover:text-white"
+                    href={s.href}
+                    onMouseEnter={() => setActiveKey(s.key)}
+                    onMouseLeave={() =>
+                      setActiveKey((cur) => (cur === s.key ? null : cur))
+                    }
+                    onFocus={() => setActiveKey(s.key)}
+                    className="content-surface group flex items-center gap-4 px-4 py-3"
                   >
-                    {active.cta}
-                    <ArrowRight size={12} strokeWidth={1.4} />
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-[14px] tracking-tightish text-white">
+                        {s.label}
+                      </div>
+                      <div className="mt-1 truncate text-[11px] tracking-tightish text-bone-400">
+                        {s.detail}
+                      </div>
+                    </div>
+                    <span
+                      className={`display shrink-0 text-[22px] tracking-tightish ${
+                        isActive ? "text-accent-tint" : "text-white"
+                      }`}
+                    >
+                      {s.value}
+                    </span>
                   </Link>
-                </div>
-              ) : (
-                <div className="text-[14px] leading-relaxed tracking-tightish text-bone-300">
-                  Tap a signal to see what&rsquo;s inside it.
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </div>
     </section>

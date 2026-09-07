@@ -53,104 +53,110 @@ export function ReviewRoom() {
     });
 
   return (
-    <div>
+    <div className="mx-auto flex max-w-[900px] flex-col gap-6 pb-8">
       {/* Current review hero */}
-      <section className="grid grid-cols-1 gap-16 border-t border-hairline pb-16 pt-14 md:grid-cols-12 md:gap-12">
-        <div className="md:col-span-7">
-          <div className="text-[11px] font-medium uppercase tracking-[0.22em] text-bone-400">
-            Current review
+      <section className="structural-surface p-6 md:p-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
+          <div className="md:col-span-7">
+            <div className="text-[11px] font-medium uppercase tracking-[0.22em] text-accent-tint">
+              Current review
+            </div>
+            <h2 className="display mt-4 text-[32px] leading-tight tracking-tightest text-white md:text-[38px]">
+              {activeCycle.name}
+            </h2>
+            <p className="mt-4 max-w-[52ch] text-[14px] leading-relaxed tracking-tightish text-bone-200">
+              {activeCycle.scope}. Owned by {activeCycle.owner}.
+            </p>
+            <div className="mt-8 flex items-baseline gap-4">
+              <span className="display text-[52px] leading-none tracking-tightest text-white">
+                {reviewed}
+              </span>
+              <span className="text-[12px] uppercase tracking-[0.16em] text-bone-400">
+                of {total} complete
+              </span>
+            </div>
           </div>
-          <h2 className="display mt-6 text-[42px] tracking-tightest text-white md:text-[52px]">
-            {activeCycle.name}
-          </h2>
-          <p className="mt-5 max-w-[52ch] text-[15px] leading-relaxed tracking-tightish text-bone-200">
-            {activeCycle.scope}. Owned by {activeCycle.owner}.
-          </p>
-          <div className="mt-10 flex items-baseline gap-5">
-            <span className="display text-[64px] leading-none tracking-tightest text-white">
-              {reviewed}
-            </span>
-            <span className="text-[13px] uppercase tracking-[0.16em] text-bone-400">
-              of {total} complete
-            </span>
-          </div>
-        </div>
 
-        <div className="md:col-span-5 md:pt-2">
-          <ProgressRing pct={pct} reviewed={reviewed} total={total} />
-          <dl className="mt-8 space-y-5">
-            <MiniRow k="Reviewed" v={reviewed} />
-            <MiniRow k="Due" v={due} />
-            <MiniRow k="Overdue" v={overdue} rose={overdue > 0} />
-          </dl>
+          <div className="md:col-span-5">
+            <ProgressRing pct={pct} reviewed={reviewed} total={total} />
+            <dl className="mt-6 space-y-4">
+              <MiniRow k="Reviewed" v={reviewed} />
+              <MiniRow k="Due" v={due} />
+              <MiniRow k="Overdue" v={overdue} rose={overdue > 0} />
+            </dl>
+          </div>
         </div>
       </section>
 
-      {/* Filters */}
-      <div className="border-t border-hairline pb-2 pt-8">
-        <Segmented
-          value={filter}
-          onChange={(v) => setFilter(v)}
-          align="left"
-          options={STATUS_FILTERS.map((f) => ({ value: f, label: f }))}
-          ariaLabel="Filter reviews"
-        />
-      </div>
-
       {/* Athlete sequence */}
-      <ol className="mt-4">
-        <AnimatePresence initial={false}>
-          {rows.map(({ a, rev, status, dueDate }, i) => {
-            const tone =
-              status === "Reviewed"
-                ? "text-signal-moss"
-                : status === "Overdue"
-                  ? "text-signal-rose"
-                  : "text-bone-400";
-            return (
+      <section>
+        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-hairline pb-3">
+          <h2 className="display text-[24px] tracking-tightest text-white">
+            Athletes
+          </h2>
+          <Segmented
+            value={filter}
+            onChange={(v) => setFilter(v)}
+            align="right"
+            options={STATUS_FILTERS.map((f) => ({ value: f, label: f }))}
+            ariaLabel="Filter reviews"
+          />
+        </div>
+
+        <ol className="mt-4 flex flex-col gap-2">
+          <AnimatePresence initial={false}>
+            {rows.map(({ a, rev, status, dueDate }, i) => (
               <motion.li
                 key={a.id}
                 layout
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], delay: Math.min(i, 12) * 0.02 }}
+                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1], delay: Math.min(i, 12) * 0.02 }}
               >
                 <Link
                   href={`/squad/${a.id}`}
-                  className="group grid grid-cols-[42px_1fr_1fr_140px_120px] items-baseline gap-6 border-t border-hairline py-7 transition-colors duration-500 ease-atlas last:border-b hover:bg-white/[0.02]"
+                  className="content-surface group flex items-center gap-4 px-4 py-3.5 md:px-5"
                 >
-                  <span className="text-[11px] tracking-[0.16em] text-bone-500">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <div className="text-[17px] tracking-tightish text-white">
-                      {a.name}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline gap-3">
+                      <span className="truncate text-[15px] tracking-tightish text-white">
+                        {a.name}
+                      </span>
+                      <span className="text-[11px] uppercase tracking-[0.14em] text-bone-500">
+                        {a.positionLabel}, {a.team}
+                      </span>
                     </div>
-                    <div className="mt-1 text-[11px] tracking-tightish text-bone-500">
-                      {a.positionLabel}, {a.team}
+                    <div className="mt-1 truncate text-[12px] tracking-tightish text-bone-400">
+                      {rev
+                        ? `Reviewed ${formatDateLong(rev.date)}`
+                        : `Due ${formatDateLong(dueDate)}`}
                     </div>
                   </div>
-                  <div className="hidden text-[13px] leading-relaxed tracking-tightish text-bone-300 md:block">
-                    {rev
-                      ? rev.assessment.length > 90
-                        ? rev.assessment.slice(0, 88) + "…"
-                        : rev.assessment
-                      : a.developmentPriority}
-                  </div>
-                  <div className={`text-[11px] uppercase tracking-[0.18em] ${tone}`}>
-                    {status}
-                  </div>
-                  <div className="text-right text-[13px] tracking-tightish text-bone-400">
-                    {rev ? `Reviewed ${formatDateLong(rev.date)}` : `Due ${formatDateLong(dueDate)}`}
-                  </div>
+                  <ReviewStatusPill status={status} />
                 </Link>
               </motion.li>
-            );
-          })}
-        </AnimatePresence>
-      </ol>
+            ))}
+          </AnimatePresence>
+        </ol>
+      </section>
     </div>
+  );
+}
+
+function ReviewStatusPill({ status }: { status: StatusFilter }) {
+  const tone =
+    status === "Reviewed"
+      ? "bg-signal-moss/20 text-signal-moss border-signal-moss/50"
+      : status === "Overdue"
+        ? "bg-signal-rose/20 text-signal-rose border-signal-rose/50"
+        : "bg-white/[0.06] text-bone-100 border-hairlineStrong";
+  return (
+    <span
+      className={`inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] ${tone}`}
+    >
+      {status}
+    </span>
   );
 }
 

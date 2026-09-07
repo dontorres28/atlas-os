@@ -12,22 +12,19 @@ export default function RecruitmentPage() {
         subtitle="Prospects the club is tracking, and the sporting needs behind them."
       />
 
-      <div className="mx-auto flex max-w-[900px] flex-col gap-6 pb-8">
+      <div className="mx-auto flex max-w-[900px] flex-col gap-14 pb-8">
         <Watchlist />
 
         {briefs.map((b) => {
           const internal = briefAthletes(b);
           return (
-            <section
-              key={b.code}
-              className="structural-surface atlas-enter p-6 md:p-8"
-            >
-              <div className="flex items-baseline justify-between">
+            <section key={b.code} className="atlas-enter">
+              <div className="flex items-baseline justify-between border-b border-hairline pb-3">
                 <div>
                   <div className="text-[11px] font-medium uppercase tracking-[0.22em] text-accent-tint">
                     Brief {b.code}
                   </div>
-                  <h2 className="display mt-4 text-[32px] leading-tight tracking-tightest text-white md:text-[38px]">
+                  <h2 className="display mt-3 text-[26px] leading-tight tracking-tightest text-white md:text-[30px]">
                     {b.title}
                   </h2>
                 </div>

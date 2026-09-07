@@ -5,9 +5,8 @@ export default function ReviewsPage() {
   return (
     <>
       <ModuleHeader
-        section="Reviews / 05"
-        title="Evaluation"
-        subtitle="Who has been reviewed. What changed. What decisions came out."
+        title="Reviews"
+        subtitle="Who has been reviewed, what changed, and what decisions came out."
       />
       <ReviewRoom />
     </>

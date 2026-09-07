@@ -104,23 +104,21 @@ export function PathwayProgression() {
   }
 
   return (
-    <div className="mx-auto flex max-w-[900px] flex-col gap-6 pb-8">
+    <div className="mx-auto flex max-w-[900px] flex-col gap-14 pb-8">
       {stages.map((stage) => {
         const here = relevantPathways
           .filter((p) => p.currentStageId === stage.id)
           .sort((a, b) => statusOrder(a.status) - statusOrder(b.status));
 
-        // Hide empty stages entirely unless it's the senior team, which
-        // always deserves a placeholder.
         if (here.length === 0 && !stage.isSenior) return null;
 
         return (
-          <section key={stage.id} className="structural-surface atlas-enter p-8">
-            <div className="flex items-baseline justify-between">
+          <section key={stage.id} className="atlas-enter">
+            <div className="flex items-baseline justify-between border-b border-hairline pb-3">
               <Link
                 href={`/pathways/${stage.key}`}
                 className={cn(
-                  "display text-[32px] tracking-tightest transition-colors hover:text-accent-tint md:text-[38px]",
+                  "display text-[24px] tracking-tightest transition-colors hover:text-accent-tint md:text-[28px]",
                   stage.isSenior ? "text-white" : "text-white/85",
                 )}
               >
@@ -132,11 +130,11 @@ export function PathwayProgression() {
             </div>
 
             {here.length === 0 ? (
-              <p className="mt-6 text-[13px] tracking-tightish text-bone-500">
+              <p className="mt-4 text-[13px] tracking-tightish text-bone-500">
                 Empty for this season.
               </p>
             ) : (
-              <div className="mt-6 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 {here.map((p) => {
                   const a = roster.find((x) => x.id === p.athleteId);
                   if (!a) return null;

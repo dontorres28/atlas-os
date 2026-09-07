@@ -5,9 +5,8 @@ export default function CyclesPage() {
   return (
     <>
       <ModuleHeader
-        section="Cycles / 04"
-        title="Sporting Year"
-        subtitle="2026 / 27. The reviews that shape the season, in order."
+        title="Cycles"
+        subtitle="The reviews that shape the 2026/27 season, in order."
       />
       <SeasonTimeline />
     </>

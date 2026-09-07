@@ -126,7 +126,7 @@ export default function CycleDetailPage() {
                     <li key={a.id}>
                       <Link
                         href={`/squad/${a.id}`}
-                        className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-500 ease-atlas last:border-b hover:bg-white/[0.02]"
+                        className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-200 ease-out last:border-b hover:bg-white/[0.02]"
                       >
                         <span className="col-span-5 text-[16px] tracking-tightish text-white">
                           {a.name}
@@ -171,7 +171,7 @@ export default function CycleDetailPage() {
                   <li key={d.id}>
                     <Link
                       href={`/decisions/${d.id}`}
-                      className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-500 ease-atlas last:border-b hover:bg-white/[0.02]"
+                      className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-200 ease-out last:border-b hover:bg-white/[0.02]"
                     >
                       <span className="col-span-2 text-[11px] font-medium uppercase tracking-[0.18em] text-accent-tint">
                         Decision {d.code}

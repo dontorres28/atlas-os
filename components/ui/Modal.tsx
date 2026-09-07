@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
@@ -31,6 +31,7 @@ export function Modal({
 }) {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     setMounted(true);
@@ -77,11 +78,11 @@ export function Modal({
           {isMobile ? (
             <motion.div
               key="sheet"
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={sheetSpring}
-              drag="y"
+              initial={reduce ? { opacity: 0 } : { y: "100%" }}
+              animate={reduce ? { opacity: 1 } : { y: 0 }}
+              exit={reduce ? { opacity: 0 } : { y: "100%" }}
+              transition={reduce ? { duration: 0.15 } : sheetSpring}
+              drag={reduce ? false : "y"}
               dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={{ top: 0, bottom: 0.6 }}
               onDragEnd={(_, info) => {
@@ -115,10 +116,10 @@ export function Modal({
           ) : (
             <motion.div
               key="dialog"
-              initial={{ opacity: 0, scale: 0.98, y: -8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.98, y: -6 }}
-              transition={spring}
+              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: -8 }}
+              animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: -6 }}
+              transition={reduce ? { duration: 0.15 } : spring}
               onClick={(e) => e.stopPropagation()}
               className="solid-glass w-full max-w-xl rounded-2xl"
             >

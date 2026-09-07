@@ -64,7 +64,7 @@ export function Segmented<T extends string>({
                 paddingX,
                 paddingY,
                 textSize,
-                "tracking-tightish transition-colors duration-300 ease-atlas",
+                "tracking-tightish transition-colors duration-200 ease-out",
                 active ? "" : "text-bone-300 hover:text-white",
               )}
               style={active ? { color: "#FEFEFE" } : undefined}
@@ -87,7 +87,7 @@ export function Segmented<T extends string>({
                 {typeof opt.count === "number" ? (
                   <span
                     className={cn(
-                      "text-[11px] tracking-tightish transition-colors duration-300",
+                      "text-[11px] tracking-tightish transition-colors duration-200",
                       active ? "" : "text-bone-500",
                     )}
                     style={active ? { color: "rgba(254, 254, 254, 0.72)" } : undefined}

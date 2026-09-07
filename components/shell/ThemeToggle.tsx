@@ -14,7 +14,7 @@ export function ThemeToggle() {
       aria-label={isLight ? "Switch to dark mode" : "Switch to light mode"}
       role="switch"
       aria-checked={isLight}
-      className="group relative inline-flex h-8 w-[60px] items-center rounded-full border border-hairline bg-white/[0.02] transition-colors duration-500 ease-atlas hover:border-hairlineStrong"
+      className="group relative inline-flex h-8 w-[60px] items-center rounded-full border border-hairline bg-white/[0.02] transition-colors duration-200 ease-out hover:border-hairlineStrong"
       style={{
         WebkitTapHighlightColor: "transparent",
       }}
@@ -56,7 +56,7 @@ export function ThemeToggle() {
       {/* Static icons underneath, so the inactive side still reads clearly */}
       <span
         aria-hidden
-        className={`pointer-events-none absolute left-[9px] top-1/2 -translate-y-1/2 transition-opacity duration-300 ${
+        className={`pointer-events-none absolute left-[9px] top-1/2 -translate-y-1/2 transition-opacity duration-200 ${
           isLight ? "opacity-0" : "opacity-90"
         }`}
       >
@@ -64,7 +64,7 @@ export function ThemeToggle() {
       </span>
       <span
         aria-hidden
-        className={`pointer-events-none absolute right-[9px] top-1/2 -translate-y-1/2 transition-opacity duration-300 ${
+        className={`pointer-events-none absolute right-[9px] top-1/2 -translate-y-1/2 transition-opacity duration-200 ${
           isLight ? "opacity-80" : "opacity-0"
         }`}
       >

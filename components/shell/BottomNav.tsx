@@ -42,7 +42,7 @@ export function BottomNav() {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "group relative flex items-center gap-2 rounded-full px-3 py-2.5 text-[13px] tracking-tightish transition-colors duration-300 ease-atlas sm:gap-2.5 sm:px-4",
+                "group relative flex items-center gap-2 rounded-full px-3 py-2.5 text-[13px] tracking-tightish transition-colors duration-200 ease-out sm:gap-2.5 sm:px-4",
                 active ? "" : "text-bone-300 hover:text-white",
               )}
               style={active ? { color: "#FEFEFE" } : undefined}
@@ -65,7 +65,7 @@ export function BottomNav() {
                   size={13}
                   strokeWidth={1.5}
                   className={cn(
-                    "transition-colors duration-300 ease-atlas",
+                    "transition-colors duration-200 ease-out",
                     active ? "" : "text-bone-500 group-hover:text-white",
                   )}
                   style={active ? { color: "#FEFEFE" } : undefined}

@@ -30,7 +30,7 @@ export function NavArrow({
   const inner = (
     <span
       className={cn(
-        "group inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] transition-colors duration-300 ease-atlas",
+        "group inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] transition-colors duration-200 ease-out",
         color,
         className,
       )}
@@ -39,7 +39,7 @@ export function NavArrow({
       <ArrowRight
         size={12}
         strokeWidth={1.4}
-        className="transition-transform duration-500 ease-atlas group-hover:translate-x-1"
+        className="transition-transform duration-200 ease-out group-hover:translate-x-1"
       />
     </span>
   );

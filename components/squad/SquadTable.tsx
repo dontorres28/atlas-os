@@ -53,7 +53,7 @@ export function SquadTable() {
             >
               <Link
                 href={`/squad/${a.id}`}
-                className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-500 ease-atlas last:border-b hover:bg-white/[0.025]"
+                className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-200 ease-out last:border-b hover:bg-white/[0.025]"
               >
                 <div className="col-span-5">
                   <div className="flex items-baseline gap-3">

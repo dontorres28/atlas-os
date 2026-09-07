@@ -51,7 +51,7 @@ export function CyclesBlock({ athlete }: { athlete: Athlete }) {
               <li key={c.id}>
                 <Link
                   href={`/cycles/${c.id}`}
-                  className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-500 ease-atlas last:border-b hover:bg-white/[0.02]"
+                  className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-200 ease-out last:border-b hover:bg-white/[0.02]"
                 >
                   <span className="col-span-5 text-[16px] tracking-tightish text-white">
                     {c.name}

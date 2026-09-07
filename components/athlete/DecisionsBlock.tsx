@@ -96,7 +96,7 @@ export function DecisionsBlock({ athlete }: { athlete: Athlete }) {
             >
               <Link
                 href={`/decisions/${d.id}`}
-                className="group block py-7 transition-colors duration-500 ease-atlas hover:bg-white/[0.02]"
+                className="group block py-7 transition-colors duration-200 ease-out hover:bg-white/[0.02]"
               >
                 <div className="grid grid-cols-12 items-baseline gap-4">
                   <span className="col-span-2 text-[11px] font-medium uppercase tracking-[0.18em] text-accent-tint">

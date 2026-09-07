@@ -63,7 +63,7 @@ export default function StagePage({ params }: { params: { key: string } }) {
             <li key={a.id}>
               <Link
                 href={`/squad/${a.id}`}
-                className="group grid grid-cols-12 items-baseline gap-4 border-b border-hairline py-6 transition-colors duration-500 ease-atlas hover:bg-white/[0.02]"
+                className="group grid grid-cols-12 items-baseline gap-4 border-b border-hairline py-6 transition-colors duration-200 ease-out hover:bg-white/[0.02]"
               >
                 <div className="col-span-4 text-[16px] tracking-tightish text-white">
                   {a.name}

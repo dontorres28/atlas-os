@@ -44,6 +44,17 @@ export function Tooltip({
           ? "right-full mr-2 top-1/2 -translate-y-1/2"
           : "left-full ml-2 top-1/2 -translate-y-1/2";
 
+  // Apple §7 — anchor to the source. Tooltip should visibly emerge
+  // from the edge of the trigger, not scale from its own center.
+  const originClass =
+    side === "top"
+      ? "origin-bottom"
+      : side === "bottom"
+        ? "origin-top"
+        : side === "left"
+          ? "origin-right"
+          : "origin-left";
+
   const alignClass =
     side === "top" || side === "bottom"
       ? align === "start"
@@ -59,9 +70,10 @@ export function Tooltip({
       <span
         role="tooltip"
         className={cn(
-          "pointer-events-none absolute z-50 rounded-lg px-3 py-2 text-[11px] leading-relaxed tracking-tightish opacity-0 shadow-[0_14px_32px_-12px_rgba(0,0,0,0.55)] transition-all duration-200 ease-atlas group-hover/tt:opacity-100 group-focus/tt:opacity-100",
+          "pointer-events-none absolute z-50 scale-[0.97] rounded-lg px-3 py-2 text-[11px] leading-relaxed tracking-tightish opacity-0 shadow-[0_14px_32px_-12px_rgba(0,0,0,0.55)] transition-[opacity,transform] duration-200 ease-out group-hover/tt:scale-100 group-hover/tt:opacity-100 group-focus/tt:scale-100 group-focus/tt:opacity-100",
           posClass,
           alignClass,
+          originClass,
           wide ? "w-[260px]" : "whitespace-nowrap",
         )}
         style={{

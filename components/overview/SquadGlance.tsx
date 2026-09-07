@@ -84,7 +84,7 @@ function PositionDot({ name }: { name: string }) {
   return (
     <span
       title={name}
-      className="relative h-2 w-2 rounded-full bg-white transition-colors duration-300 hover:bg-accent-tint"
+      className="relative h-2 w-2 rounded-full bg-white transition-colors duration-200 hover:bg-accent-tint"
       aria-label={name}
     />
   );

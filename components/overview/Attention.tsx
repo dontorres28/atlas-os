@@ -143,7 +143,7 @@ export function Attention() {
           <li key={it.key}>
             <Link
               href={it.href}
-              className="group grid grid-cols-12 items-baseline gap-6 border-t border-hairline py-10 transition-colors duration-500 ease-atlas last:border-b hover:bg-white/[0.02]"
+              className="group grid grid-cols-12 items-baseline gap-6 border-t border-hairline py-10 transition-colors duration-200 ease-out last:border-b hover:bg-white/[0.02]"
             >
               <div className="col-span-1 text-[11px] tracking-[0.18em] text-bone-500">
                 {String(i + 1).padStart(2, "0")}
@@ -168,7 +168,7 @@ export function Attention() {
                   <ArrowRight
                     size={12}
                     strokeWidth={1.4}
-                    className="transition-transform duration-500 ease-atlas group-hover:translate-x-1"
+                    className="transition-transform duration-200 ease-out group-hover:translate-x-1"
                   />
                 </span>
               </div>

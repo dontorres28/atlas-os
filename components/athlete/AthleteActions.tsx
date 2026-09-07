@@ -76,7 +76,7 @@ export function AthleteActions({ athlete }: { athlete: Athlete }) {
               type="button"
               onClick={() => updateNote({ status: s })}
               className={
-                "rounded-full border px-4 py-2 text-[13px] tracking-tightish transition-all duration-300 ease-atlas " +
+                "rounded-full border px-4 py-2 text-[13px] tracking-tightish transition-all duration-200 ease-out " +
                 (active
                   ? "border-accent bg-accent"
                   : "border-hairlineStrong text-bone-200 hover:border-white hover:text-white")

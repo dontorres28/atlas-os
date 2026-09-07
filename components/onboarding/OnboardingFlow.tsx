@@ -146,7 +146,7 @@ function StepSport() {
               type="button"
               onClick={() => setSport(s.id as SportId)}
               className={
-                "group flex flex-col items-start gap-2 rounded-2xl border px-6 py-5 text-left transition-all duration-300 ease-atlas " +
+                "group flex flex-col items-start gap-2 rounded-2xl border px-6 py-5 text-left transition-all duration-200 ease-out " +
                 (active
                   ? "border-accent bg-accent-wash"
                   : "border-hairlineStrong hover:border-white/40 hover:bg-white/[0.02]")
@@ -496,7 +496,7 @@ function StepReady() {
               className="grid grid-cols-[28px_1fr] items-baseline gap-4 border-t border-hairline py-5 last:border-b"
             >
               <span
-                className={`transition-colors duration-500 ease-atlas ${
+                className={`transition-colors duration-200 ease-out ${
                   shown ? "text-accent-tint" : "text-bone-700"
                 }`}
               >
@@ -632,7 +632,7 @@ function PathChoice({
       type="button"
       onClick={onClick}
       className={
-        "group flex flex-col items-start gap-2 rounded-2xl border px-6 py-5 text-left transition-all duration-300 ease-atlas " +
+        "group flex flex-col items-start gap-2 rounded-2xl border px-6 py-5 text-left transition-all duration-200 ease-out " +
         (active
           ? "border-accent bg-accent-wash"
           : "border-hairlineStrong hover:border-white/40 hover:bg-white/[0.02]")
@@ -670,7 +670,7 @@ function Chip({
       onClick={onClick}
       disabled={disabled}
       className={
-        "rounded-full border px-4 py-2 text-[13px] tracking-tightish transition-all duration-300 ease-atlas " +
+        "rounded-full border px-4 py-2 text-[13px] tracking-tightish transition-all duration-200 ease-out " +
         (active
           ? "border-accent bg-accent"
           : disabled

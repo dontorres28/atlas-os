@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { RotateCcw } from "lucide-react";
 
 /**
@@ -38,6 +38,7 @@ export function UndoToaster({ children }: { children: React.ReactNode }) {
   const [toast, setToast] = useState<ToastState | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [mounted, setMounted] = useState(false);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     setMounted(true);
@@ -78,10 +79,14 @@ export function UndoToaster({ children }: { children: React.ReactNode }) {
                 {toast ? (
                   <motion.div
                     key={toast.id}
-                    initial={{ opacity: 0, y: 12, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                    transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+                    initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.98 }}
+                    animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+                    exit={reduce ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.98 }}
+                    transition={
+                      reduce
+                        ? { duration: 0.15 }
+                        : { type: "spring", bounce: 0, duration: 0.3 }
+                    }
                     className="solid-glass pointer-events-auto relative flex min-w-[260px] max-w-[420px] items-center gap-3 overflow-hidden rounded-full py-2 pl-4 pr-2"
                   >
                     <span className="flex-1 truncate text-[13px] tracking-tightish text-bone-100">

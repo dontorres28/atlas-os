@@ -135,7 +135,7 @@ function CycleDetail({ cycleId }: { cycleId: string }) {
             <ArrowRight
               size={12}
               strokeWidth={1.4}
-              className="transition-transform duration-500 ease-atlas group-hover:translate-x-1"
+              className="transition-transform duration-200 ease-out group-hover:translate-x-1"
             />
           </Link>
         </div>
@@ -155,7 +155,7 @@ function CycleDetail({ cycleId }: { cycleId: string }) {
         </div>
         <div className="mt-6 h-px w-full bg-hairline">
           <div
-            className="h-px bg-accent transition-all duration-500 ease-atlas"
+            className="h-px bg-accent transition-all duration-200 ease-out"
             style={{ width: `${pct}%` }}
           />
         </div>

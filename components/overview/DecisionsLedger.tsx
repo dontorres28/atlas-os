@@ -41,7 +41,7 @@ export function DecisionsLedger({ limit = 5 }: { limit?: number }) {
             <li key={d.id}>
               <Link
                 href={`/decisions/${d.id}`}
-                className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-500 ease-atlas last:border-b hover:bg-white/[0.02]"
+                className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-200 ease-out last:border-b hover:bg-white/[0.02]"
               >
                 <div className="col-span-2">
                   <div className="text-[10px] uppercase tracking-[0.18em] text-bone-500">

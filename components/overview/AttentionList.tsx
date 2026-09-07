@@ -40,7 +40,7 @@ export function AttentionList() {
             <li key={it.athlete.id}>
               <Link
                 href={`/squad/${it.athlete.id}`}
-                className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-500 ease-atlas last:border-b hover:bg-white/[0.02]"
+                className="group grid grid-cols-12 items-baseline gap-4 border-t border-hairline py-6 transition-colors duration-200 ease-out last:border-b hover:bg-white/[0.02]"
               >
                 <span className="col-span-5 text-[17px] tracking-tightish text-white">
                   {it.athlete.name}

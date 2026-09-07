@@ -105,7 +105,7 @@ export default function RecruitmentPage() {
                   <ArrowRight
                     size={12}
                     strokeWidth={1.4}
-                    className="transition-transform duration-300 ease-out group-hover:translate-x-1"
+                    className="transition-transform duration-200 ease-out group-hover:translate-x-1"
                   />
                 </button>
               </div>

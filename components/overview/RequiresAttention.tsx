@@ -42,7 +42,7 @@ export function RequiresAttention() {
             <li key={it.key}>
               <Link
                 href={it.href}
-                className="group flex items-baseline justify-between gap-8 border-t border-hairlineStrong py-8 transition-colors duration-500 ease-atlas last:border-b hover:bg-white/[0.02]"
+                className="group flex items-baseline justify-between gap-8 border-t border-hairlineStrong py-8 transition-colors duration-200 ease-out last:border-b hover:bg-white/[0.02]"
               >
                 <div className="min-w-0">
                   <div className="text-[20px] tracking-tightish text-white">
@@ -57,7 +57,7 @@ export function RequiresAttention() {
                   <ArrowRight
                     size={12}
                     strokeWidth={1.4}
-                    className="transition-transform duration-500 ease-atlas group-hover:translate-x-1"
+                    className="transition-transform duration-200 ease-out group-hover:translate-x-1"
                   />
                 </span>
               </Link>

@@ -29,7 +29,7 @@ export function TopBar() {
           <div className="flex items-center gap-12">
             <Link
               href="/"
-              className="group flex items-center transition-transform duration-500 ease-atlas hover:-translate-y-[1px]"
+              className="group flex items-center transition-transform duration-200 ease-out hover:-translate-y-[1px]"
             >
               <AtlasWordmark size={16} />
             </Link>
@@ -43,7 +43,7 @@ export function TopBar() {
           <div className="flex items-center gap-5">
             <button
               onClick={() => setOpen(true)}
-              className="group flex items-center gap-3 rounded-full border border-hairline bg-white/[0.02] px-4 py-2 text-bone-300 transition-colors duration-500 ease-atlas hover:border-hairlineStrong hover:text-white"
+              className="group flex items-center gap-3 rounded-full border border-hairline bg-white/[0.02] px-4 py-2 text-bone-300 transition-colors duration-200 ease-out hover:border-hairlineStrong hover:text-white"
             >
               <Search size={12} strokeWidth={1.5} />
               <span className="hidden text-[12px] tracking-tightish sm:inline">
@@ -66,7 +66,7 @@ export function TopBar() {
 
 function ContextPicker({ label }: { label: string }) {
   return (
-    <button className="group flex items-center gap-2 text-left text-bone-200 transition-colors duration-500 ease-atlas hover:text-white">
+    <button className="group flex items-center gap-2 text-left text-bone-200 transition-colors duration-200 ease-out hover:text-white">
       <span className="text-[13px] tracking-tightish">{label}</span>
       <ChevronDown size={11} strokeWidth={1.4} className="text-bone-500 transition-colors group-hover:text-bone-200" />
     </button>

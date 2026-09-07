@@ -6,6 +6,16 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
+/**
+ * Modal that adapts to viewport:
+ *  - Wider than 640px → centered card (Apple: dialog materials).
+ *  - Narrower → bottom sheet that slides up (mobile-native pattern,
+ *    Vaul-style). Drag handle at the top, rounded top corners, and
+ *    a scrollable content area so tall forms don't blow out the sheet.
+ *
+ * Spring physics on enter/exit (Apple §4 — critically damped, no
+ * overshoot) so the surface feels physical, not scripted.
+ */
 export function Modal({
   open,
   onClose,
@@ -20,9 +30,15 @@ export function Modal({
   children: ReactNode;
 }) {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
   }, []);
 
   useEffect(() => {
@@ -39,6 +55,9 @@ export function Modal({
     };
   }, [open, onClose]);
 
+  const spring = { type: "spring" as const, bounce: 0, duration: 0.35 };
+  const sheetSpring = { type: "spring" as const, bounce: 0, duration: 0.3 };
+
   const overlay = (
     <AnimatePresence>
       {open ? (
@@ -47,37 +66,82 @@ export function Modal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[100] flex items-start justify-center px-6 pt-[10vh]"
+          className={
+            isMobile
+              ? "fixed inset-0 z-[100] flex items-end justify-center"
+              : "fixed inset-0 z-[100] flex items-start justify-center px-6 pt-[10vh]"
+          }
           style={{ backgroundColor: "var(--canvas)" }}
           onClick={onClose}
         >
-          <motion.div
-            initial={{ opacity: 0, y: -12, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -6, filter: "blur(4px)" }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            onClick={(e) => e.stopPropagation()}
-            className="solid-glass w-full max-w-xl rounded-2xl"
-          >
-            <div className="flex items-center justify-between border-b border-hairline px-8 py-5">
-              <div className="flex items-baseline gap-6">
-                <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-accent-tint">
-                  {section}
-                </span>
-                <span className="text-[15px] tracking-tightish text-white">
-                  {title}
-                </span>
+          {isMobile ? (
+            <motion.div
+              key="sheet"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={sheetSpring}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0, bottom: 0.6 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.y > 120 || info.velocity.y > 500) onClose();
+              }}
+              onClick={(e) => e.stopPropagation()}
+              className="solid-glass flex max-h-[92vh] w-full flex-col rounded-t-2xl"
+            >
+              <div className="flex justify-center pt-3">
+                <span className="h-[4px] w-[42px] rounded-full bg-hairlineStrong" />
               </div>
-              <button
-                onClick={onClose}
-                className="text-bone-400 transition-colors duration-300 hover:text-white"
-                aria-label="Close"
-              >
-                <X size={16} strokeWidth={1.4} />
-              </button>
-            </div>
-            <div className="px-8 py-7">{children}</div>
-          </motion.div>
+              <div className="flex items-center justify-between border-b border-hairline px-6 py-4">
+                <div className="flex items-baseline gap-4">
+                  <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-accent-tint">
+                    {section}
+                  </span>
+                  <span className="text-[15px] tracking-tightish text-white">
+                    {title}
+                  </span>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="text-bone-400 transition-colors hover:text-white"
+                  aria-label="Close"
+                >
+                  <X size={16} strokeWidth={1.4} />
+                </button>
+              </div>
+              <div className="overflow-y-auto px-6 pb-8 pt-5">{children}</div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="dialog"
+              initial={{ opacity: 0, scale: 0.98, y: -8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: -6 }}
+              transition={spring}
+              onClick={(e) => e.stopPropagation()}
+              className="solid-glass w-full max-w-xl rounded-2xl"
+            >
+              <div className="flex items-center justify-between border-b border-hairline px-8 py-5">
+                <div className="flex items-baseline gap-6">
+                  <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-accent-tint">
+                    {section}
+                  </span>
+                  <span className="text-[15px] tracking-tightish text-white">
+                    {title}
+                  </span>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="text-bone-400 transition-colors hover:text-white"
+                  aria-label="Close"
+                >
+                  <X size={16} strokeWidth={1.4} />
+                </button>
+              </div>
+              <div className="px-8 py-7">{children}</div>
+            </motion.div>
+          )}
         </motion.div>
       ) : null}
     </AnimatePresence>

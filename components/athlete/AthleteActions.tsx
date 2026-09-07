@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import type { Athlete } from "@/lib/types";
 import { useUserStore, type PathwayNote } from "@/data/user-store";
-import { GhostButton, PrimaryButton, Select, TextInput } from "@/components/ui/Field";
+import { GhostButton, Select, TextInput } from "@/components/ui/Field";
 import { SourceEditor } from "@/components/ui/Sources";
 import { useUndoToast } from "@/components/ui/UndoToast";
 import { AthleteFormModal } from "@/components/squad/AthleteFormModal";
@@ -124,11 +124,14 @@ export function AthleteActions({ athlete }: { athlete: Athlete }) {
         <div className="text-[11px] font-medium uppercase tracking-[0.22em] text-bone-400">
           Athlete record
         </div>
+        {/* Edit + Remove are both maintenance — neither is the page's
+            primary action (those live in Review + Decisions blocks above),
+            so both stay Ghost weight. */}
         <div className="mt-6 flex items-center gap-3">
-          <PrimaryButton onClick={() => setEditOpen(true)}>
+          <GhostButton onClick={() => setEditOpen(true)}>
             <Pencil size={12} strokeWidth={1.6} />
             Edit
-          </PrimaryButton>
+          </GhostButton>
           <GhostButton onClick={remove}>
             <Trash2 size={12} strokeWidth={1.6} />
             Remove athlete

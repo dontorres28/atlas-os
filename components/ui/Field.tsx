@@ -59,7 +59,7 @@ export function PrimaryButton({
   return (
     <button
       {...props}
-      className="group inline-flex items-center gap-3 rounded-full border border-accent bg-accent px-5 py-2.5 text-[12px] tracking-tightish shadow-[0_8px_24px_-8px_rgba(24,61,168,0.7)] transition-colors duration-500 ease-atlas hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-40"
+      className="press-scale group inline-flex items-center gap-3 rounded-full border border-accent bg-accent px-5 py-2.5 text-[12px] tracking-tightish shadow-[0_8px_24px_-8px_rgba(24,61,168,0.7)] transition-[background-color,transform] duration-200 ease-out hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-40"
       style={{ color: "#FEFEFE", ...style }}
     >
       {children}
@@ -74,7 +74,7 @@ export function GhostButton({
   return (
     <button
       {...props}
-      className="inline-flex items-center gap-2 rounded-full border border-hairline px-4 py-2 text-[12px] tracking-tightish text-bone-200 transition-colors duration-500 ease-atlas hover:border-hairlineStrong hover:text-white"
+      className="press-scale inline-flex items-center gap-2 rounded-full border border-hairline px-4 py-2 text-[12px] tracking-tightish text-bone-200 transition-[color,border-color,transform] duration-200 ease-out hover:border-hairlineStrong hover:text-white"
     >
       {children}
     </button>

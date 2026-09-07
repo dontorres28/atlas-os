@@ -5,14 +5,12 @@ import { useMemo, useState } from "react";
 import { Plus, Upload } from "lucide-react";
 import { athletes as seedAthletes } from "@/data/athletes";
 import { getPathway } from "@/data/pathways";
-import { ATHLETE_SIGNALS, signalsFor } from "@/data/athlete-state";
 import { useRoster } from "@/data/use-roster";
 import { useOnboarding } from "@/data/onboarding";
 import { useUserStore } from "@/data/user-store";
-import { StateDot } from "@/components/ui/StateDot";
 import { Segmented } from "@/components/ui/Segmented";
-import { Tooltip } from "@/components/ui/Tooltip";
 import { PrimaryButton, GhostButton } from "@/components/ui/Field";
+import { cn } from "@/lib/utils";
 import { AddAthleteModal } from "./AddAthleteModal";
 import { ImportRosterModal } from "./ImportRosterModal";
 
@@ -86,82 +84,70 @@ export function SquadComposition() {
         </div>
       </div>
 
-      {GROUPS.map((g) => {
-        const inGroup = rows.filter((a) => g.positions.includes(a.position));
-        if (inGroup.length === 0) return null;
-        return (
-          <section key={g.key} className="atlas-enter pb-16 pt-10">
-            <div className="mb-6 flex items-baseline justify-between">
-              <h2 className="text-[13px] font-medium uppercase tracking-[0.22em] text-bone-400">
-                {g.label}
-              </h2>
-              <span className="text-[11px] tracking-tightish text-bone-500">
-                {inGroup.length}
-              </span>
-            </div>
+      <div className="flex flex-col gap-6">
+        {GROUPS.map((g) => {
+          const inGroup = rows.filter((a) => g.positions.includes(a.position));
+          if (inGroup.length === 0) return null;
+          return (
+            <section key={g.key} className="structural-surface atlas-enter p-6 md:p-8">
+              <div className="mb-6 flex items-baseline justify-between">
+                <h2 className="display text-[24px] tracking-tightest text-white">
+                  {g.label}
+                </h2>
+                <span className="text-[11px] uppercase tracking-[0.18em] text-bone-500">
+                  {inGroup.length} player{inGroup.length === 1 ? "" : "s"}
+                </span>
+              </div>
 
-            <ol className="grid grid-cols-1 gap-x-8 gap-y-1 md:grid-cols-2">
-              {inGroup.map((a) => {
-                const signals = ATHLETE_SIGNALS[a.id] ?? signalsFor(a);
-                const p = getPathway(a.id);
-                const status = p?.status ?? pathwayNotes[a.id]?.status ?? "On Track";
-                const ringTone = ringToneFor(status, signals.composite);
-                const statusColor = statusColorClass(status);
-                const loanClub =
-                  a.team === "Loan"
-                    ? p?.loanClub ??
-                      a.loanStatus
-                        ?.replace(/^On loan at /, "")
-                        .replace(/ for .*$/, "") ??
-                      ""
-                    : "";
-                return (
-                  <li key={a.id}>
-                    <Link
-                      href={`/squad/${a.id}`}
-                      className="group grid grid-cols-[24px_1fr_auto] items-center gap-5 py-4 transition-colors duration-300 hover:bg-white/[0.02] rounded-xl px-3 -mx-3"
-                    >
-                      <Tooltip
-                        side="right"
-                        wide
-                        title={status}
-                        hint={statusExplainer(status)}
+              <ol className="flex flex-col gap-2">
+                {inGroup.map((a) => {
+                  const p = getPathway(a.id);
+                  const status = (p?.status ??
+                    pathwayNotes[a.id]?.status ??
+                    "On Track") as
+                    | "Ready"
+                    | "On Track"
+                    | "At Risk"
+                    | "Blocked";
+                  const loanClub =
+                    a.team === "Loan"
+                      ? p?.loanClub ??
+                        a.loanStatus
+                          ?.replace(/^On loan at /, "")
+                          .replace(/ for .*$/, "") ??
+                        ""
+                      : "";
+                  return (
+                    <li key={a.id}>
+                      <Link
+                        href={`/squad/${a.id}`}
+                        className="content-surface group flex items-center gap-4 px-4 py-3.5 md:px-5"
                       >
-                        <StateDot tone={ringTone} size={14} />
-                      </Tooltip>
-                      <div className="min-w-0">
-                        <div className="flex items-baseline gap-3">
-                          <span className="text-[17px] tracking-tightish text-white truncate">
-                            {a.name}
-                          </span>
-                          <span className="text-[11px] uppercase tracking-[0.14em] text-bone-500">
-                            {a.position}
-                          </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-baseline gap-3">
+                            <span className="truncate text-[16px] tracking-tightish text-white">
+                              {a.name}
+                            </span>
+                            <span className="text-[11px] uppercase tracking-[0.14em] text-bone-500">
+                              {a.positionLabel}
+                            </span>
+                          </div>
+                          <div className="mt-1 text-[12px] tracking-tightish text-bone-400">
+                            {loanClub
+                              ? `On loan at ${loanClub}`
+                              : `${a.age} years, ${a.team}`}
+                          </div>
                         </div>
-                        <div className="mt-1 flex items-baseline gap-4 text-[12px] tracking-tightish text-bone-400">
-                          {loanClub ? (
-                            <span className="truncate">On loan at {loanClub}</span>
-                          ) : (
-                            <>
-                              <span>{a.age} yrs</span>
-                              <span>{a.team}</span>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className={`text-right text-[11px] font-medium uppercase tracking-[0.16em] ${statusColor}`}
-                      >
-                        {status}
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ol>
-          </section>
-        );
-      })}
+                        <StatusPill status={status} />
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
+          );
+        })}
+      </div>
 
       <AddAthleteModal open={addOpen} onClose={() => setAddOpen(false)} />
       <ImportRosterModal open={importOpen} onClose={() => setImportOpen(false)} />
@@ -222,40 +208,27 @@ function EmptyState({
   );
 }
 
-function statusExplainer(status?: string) {
-  switch (status) {
-    case "Ready":
-      return "Doing so well they are ready to move up.";
-    case "On Track":
-      return "Everything looks good. No action needed.";
-    case "At Risk":
-      return "Falling behind. Keep an eye on this one.";
-    case "Blocked":
-      return "Something is stopping them from moving forward.";
-    default:
-      return "Current pathway status.";
-  }
-}
-
-function ringToneFor(status: string, composite: number): "accent" | "moss" | "amber" | "rose" {
-  if (status === "Ready") return "accent";
-  if (status === "Blocked") return "rose";
-  if (status === "At Risk") return "amber";
-  if (composite >= 75) return "moss";
-  if (composite >= 55) return "amber";
-  return "rose";
-}
-
-function statusColorClass(status: string) {
-  switch (status) {
-    case "Ready":
-      return "text-accent-tint";
-    case "At Risk":
-      return "text-signal-amber";
-    case "Blocked":
-      return "text-signal-rose";
-    case "On Track":
-    default:
-      return "text-bone-400";
-  }
+function StatusPill({
+  status,
+}: {
+  status: "Ready" | "On Track" | "At Risk" | "Blocked";
+}) {
+  const tone =
+    status === "Ready"
+      ? "bg-accent text-white border-accent"
+      : status === "At Risk"
+        ? "bg-signal-amber/20 text-signal-amber border-signal-amber/50"
+        : status === "Blocked"
+          ? "bg-signal-rose/20 text-signal-rose border-signal-rose/50"
+          : "bg-white/[0.06] text-bone-100 border-hairlineStrong";
+  return (
+    <span
+      className={cn(
+        "inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]",
+        tone,
+      )}
+    >
+      {status}
+    </span>
+  );
 }

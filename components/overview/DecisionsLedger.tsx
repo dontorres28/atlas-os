@@ -56,7 +56,8 @@ export function DecisionsLedger({ limit = 5 }: { limit?: number }) {
                     {d.summary}
                   </div>
                   <div className="meta mt-1 text-bone-400">
-                    {a?.team ?? ""} <span className="mx-2 text-bone-600">·</span>{" "}
+                    {a?.team ?? ""}
+                    {a?.team ? ", " : ""}
                     {d.area}
                   </div>
                 </div>

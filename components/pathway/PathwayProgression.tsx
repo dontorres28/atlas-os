@@ -1,15 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { GitBranch, Plus } from "lucide-react";
 import { useRoster } from "@/data/use-roster";
-import { athletePathways, pathwayStages, stageOf } from "@/data/pathways";
+import { athletePathways, pathwayStages } from "@/data/pathways";
 import { useUserStore } from "@/data/user-store";
-import type { AthletePathway } from "@/lib/types";
+import type { AthletePathway, PathwayReadiness } from "@/lib/types";
 import { PrimaryButton } from "@/components/ui/Field";
 import { cn } from "@/lib/utils";
-import { Tooltip } from "@/components/ui/Tooltip";
 
 function teamToStageId(team: string) {
   if (team === "U19") return "u19";
@@ -18,15 +17,43 @@ function teamToStageId(team: string) {
   return "u17";
 }
 
+function pillClass(status: PathwayReadiness) {
+  switch (status) {
+    case "Ready":
+      return "bg-accent text-white border border-accent";
+    case "On Track":
+      return "bg-white/[0.06] text-white border border-hairlineStrong";
+    case "At Risk":
+      return "bg-signal-amber/20 text-signal-amber border border-signal-amber/50";
+    case "Blocked":
+      return "bg-signal-rose/20 text-signal-rose border border-signal-rose/50";
+    default:
+      return "bg-white/[0.06] text-white border border-hairlineStrong";
+  }
+}
+
+function statusOrder(s: PathwayReadiness) {
+  switch (s) {
+    case "Ready":
+      return 0;
+    case "On Track":
+      return 1;
+    case "At Risk":
+      return 2;
+    case "Blocked":
+      return 3;
+    default:
+      return 4;
+  }
+}
+
 export function PathwayProgression() {
   const roster = useRoster();
   const notes = useUserStore((s) => s.pathwayNotes);
-  const [hover, setHover] = useState<string | null>(null);
 
   /**
    * Combined pathway list: seed-computed pathways for demo athletes,
-   * synthesized entries for user-owned athletes (using their saved
-   * pathway note or a sensible default).
+   * synthesized entries for user-owned athletes.
    */
   const relevantPathways = useMemo<AthletePathway[]>(() => {
     return roster.map((a) => {
@@ -44,17 +71,10 @@ export function PathwayProgression() {
         confidence: "Medium",
         nextStepSummary: note?.nextStep ?? "Consolidate at current stage.",
         blocker: note?.blocker,
-        history: [
-          { stageId: currentStageId, season: "2026/27", year: 2026 },
-        ],
+        history: [{ stageId: currentStageId, season: "2026/27", year: 2026 }],
       };
     });
   }, [roster, notes]);
-
-  const hoveredAthlete = hover ? roster.find((a) => a.id === hover) : null;
-  const hoveredPathway = hover
-    ? relevantPathways.find((p) => p.athleteId === hover)
-    : null;
 
   const stages = [...pathwayStages].sort((a, b) => b.order - a.order);
 
@@ -68,7 +88,8 @@ export function PathwayProgression() {
           No athletes to place yet.
         </h2>
         <p className="mx-auto mt-6 max-w-[40ch] text-[14px] leading-relaxed tracking-tightish text-bone-300">
-          Add some athletes and Atlas will start mapping where they sit today and where they're heading next.
+          Add some athletes and Atlas will start mapping where they sit today
+          and where they&rsquo;re heading next.
         </p>
         <div className="mt-8 flex items-center justify-center">
           <Link href="/squad">
@@ -83,194 +104,63 @@ export function PathwayProgression() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-10 pb-8 md:grid-cols-[1fr_320px]">
-      <div>
-        {stages.map((stage) => {
-          const here = relevantPathways
-            .filter((p) => p.currentStageId === stage.id)
-            .sort((a, b) => statusOrder(a.status) - statusOrder(b.status));
+    <div className="mx-auto flex max-w-[900px] flex-col gap-6 pb-8">
+      {stages.map((stage) => {
+        const here = relevantPathways
+          .filter((p) => p.currentStageId === stage.id)
+          .sort((a, b) => statusOrder(a.status) - statusOrder(b.status));
 
-          return (
-            <section key={stage.id} className="atlas-enter py-9">
-              <div className="flex items-baseline justify-between">
-                <Link
-                  href={`/pathways/${stage.key}`}
-                  className={cn(
-                    "display text-[36px] tracking-tightest transition-colors hover:text-accent-tint md:text-[44px]",
-                    stage.isSenior ? "text-white" : "text-white/85",
-                  )}
-                >
-                  {stage.label}
-                </Link>
-                <span className="text-[11px] tracking-tightish text-bone-500">
-                  {here.length}
-                </span>
-              </div>
+        // Hide empty stages entirely unless it's the senior team, which
+        // always deserves a placeholder.
+        if (here.length === 0 && !stage.isSenior) return null;
 
-              <div className="mt-6 flex flex-wrap gap-2.5">
-                {here.length === 0 ? (
-                  <span className="text-[12px] text-bone-600">Empty</span>
-                ) : (
-                  here.map((p) => {
-                    const a = roster.find((x) => x.id === p.athleteId);
-                    if (!a) return null;
-                    return (
-                      <Tooltip
-                        key={a.id}
-                        side="top"
-                        title={a.name}
-                        hint={`${a.positionLabel}, ${p.status}`}
-                      >
-                        <Link
-                          href={`/squad/${a.id}`}
-                          onMouseEnter={() => setHover(a.id)}
-                          onMouseLeave={() =>
-                            setHover((cur) => (cur === a.id ? null : cur))
-                          }
-                          onFocus={() => setHover(a.id)}
-                          aria-label={a.name}
-                          className={cn(
-                            "relative flex h-[14px] w-[14px] items-center justify-center rounded-full transition-transform duration-300 ease-atlas hover:scale-[1.6]",
-                            dotClass(p.status),
-                            hover === a.id ? "scale-[1.6]" : "",
-                          )}
-                        />
-                      </Tooltip>
-                    );
-                  })
-                )}
-              </div>
-            </section>
-          );
-        })}
-
-        <div className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-hairline pt-6">
-          <Legend tone="accent">Ready</Legend>
-          <Legend tone="white">On Track</Legend>
-          <Legend tone="amber">At Risk</Legend>
-          <Legend tone="rose">Blocked</Legend>
-        </div>
-      </div>
-
-      <aside className="sticky top-8 hidden self-start md:block">
-        <div className="pill-glass rounded-2xl p-6">
-          <div className="text-[10px] font-medium uppercase tracking-[0.22em] text-bone-500">
-            {hoveredAthlete ? "Athlete" : "Tap a dot"}
-          </div>
-          {hoveredAthlete && hoveredPathway ? (
-            <div className="mt-4">
+        return (
+          <section key={stage.id} className="structural-surface atlas-enter p-8">
+            <div className="flex items-baseline justify-between">
               <Link
-                href={`/squad/${hoveredAthlete.id}`}
-                className="display block text-[26px] tracking-tightest text-white transition-colors hover:text-accent-tint"
+                href={`/pathways/${stage.key}`}
+                className={cn(
+                  "display text-[32px] tracking-tightest transition-colors hover:text-accent-tint md:text-[38px]",
+                  stage.isSenior ? "text-white" : "text-white/85",
+                )}
               >
-                {hoveredAthlete.name}
+                {stage.label}
               </Link>
-              <div className="mt-3 text-[13px] tracking-tightish text-bone-300">
-                {hoveredAthlete.positionLabel}, {hoveredAthlete.age} yrs
-              </div>
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <MetaCell k="Stage" v={stageOf(hoveredPathway.currentStageId)?.label ?? ""} />
-                <MetaCell
-                  k="Next"
-                  v={
-                    hoveredPathway.nextStageId
-                      ? stageOf(hoveredPathway.nextStageId)?.label ?? "Established"
-                      : "Established"
-                  }
-                />
-                <MetaCell k="Status" v={hoveredPathway.status} tone={hoveredPathway.status} />
-                <MetaCell k="Confidence" v={hoveredPathway.confidence} />
-              </div>
-              <p className="mt-6 text-[12px] leading-relaxed text-bone-400">
-                {hoveredPathway.nextStepSummary}
-              </p>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-bone-500">
+                {here.length} athlete{here.length === 1 ? "" : "s"}
+              </span>
             </div>
-          ) : (
-            <p className="mt-4 text-[13px] leading-relaxed text-bone-400">
-              Each dot is an athlete. Colour shows their pathway status.
-            </p>
-          )}
-        </div>
-      </aside>
-    </div>
-  );
-}
 
-function statusOrder(s: string) {
-  switch (s) {
-    case "Ready":
-      return 0;
-    case "On Track":
-      return 1;
-    case "At Risk":
-      return 2;
-    case "Blocked":
-      return 3;
-    default:
-      return 4;
-  }
-}
-
-function dotClass(status: string) {
-  switch (status) {
-    case "Ready":
-      return "bg-accent";
-    case "Blocked":
-      return "bg-signal-rose";
-    case "At Risk":
-      return "bg-signal-amber";
-    case "On Track":
-    default:
-      return "bg-white";
-  }
-}
-
-function Legend({
-  children,
-  tone,
-}: {
-  children: React.ReactNode;
-  tone: "accent" | "white" | "amber" | "rose";
-}) {
-  const bg =
-    tone === "accent"
-      ? "bg-accent"
-      : tone === "white"
-        ? "bg-white"
-        : tone === "amber"
-          ? "bg-signal-amber"
-          : "bg-signal-rose";
-  return (
-    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-bone-400">
-      <span className={`h-[10px] w-[10px] rounded-full ${bg}`} />
-      {children}
-    </div>
-  );
-}
-
-function MetaCell({
-  k,
-  v,
-  tone,
-}: {
-  k: string;
-  v: string;
-  tone?: string;
-}) {
-  const color =
-    tone === "Ready"
-      ? "text-accent-tint"
-      : tone === "Blocked"
-        ? "text-signal-rose"
-        : tone === "At Risk"
-          ? "text-signal-amber"
-          : "text-white";
-  return (
-    <div>
-      <div className="text-[10px] font-medium uppercase tracking-[0.22em] text-bone-500">
-        {k}
-      </div>
-      <div className={`mt-2 text-[14px] tracking-tightish ${color}`}>{v}</div>
+            {here.length === 0 ? (
+              <p className="mt-6 text-[13px] tracking-tightish text-bone-500">
+                Empty for this season.
+              </p>
+            ) : (
+              <div className="mt-6 flex flex-wrap gap-2">
+                {here.map((p) => {
+                  const a = roster.find((x) => x.id === p.athleteId);
+                  if (!a) return null;
+                  return (
+                    <Link
+                      key={a.id}
+                      href={`/squad/${a.id}`}
+                      className={cn(
+                        "press-scale inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[13px] tracking-tightish transition-colors",
+                        pillClass(p.status),
+                      )}
+                    >
+                      <span>{a.name}</span>
+                      <span className="text-[11px] uppercase tracking-[0.14em] opacity-70">
+                        {p.status}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        );
+      })}
     </div>
   );
 }

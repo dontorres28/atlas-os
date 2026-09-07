@@ -11,6 +11,10 @@ export const seedReviews: Review[] = [
       "Strong progression into senior football. Defensive positioning remains the primary development priority.",
     developmentPriority: "Progressive passing under pressure",
     nextReviewDate: "2026-11-12",
+    sources: [
+      { label: "Preseason debrief, 2026-07-28" },
+      { label: "vs SC Kriens clip, 71'" },
+    ],
   },
   {
     id: "rev_002",

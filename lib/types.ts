@@ -51,6 +51,17 @@ export interface Contract {
   extensionOption?: boolean;
 }
 
+/**
+ * A pointer to something outside Atlas that supports a claim — a scouting
+ * report PDF, a match clip, an internal doc. The URL is optional so users
+ * can note the source ("Season debrief, 2026-05-30") without hosting the
+ * link.
+ */
+export interface Evidence {
+  label: string;
+  url?: string;
+}
+
 export interface Review {
   id: string;
   athleteId: string;
@@ -60,6 +71,7 @@ export interface Review {
   developmentPriority: string;
   nextReviewDate?: string;
   cycleId?: string;
+  sources?: Evidence[];
 }
 
 export interface DecisionOutcome {
@@ -83,6 +95,7 @@ export interface Decision {
   cycleId?: string;
   outcome?: DecisionOutcome;
   status: DecisionStatus;
+  sources?: Evidence[];
 }
 
 export interface DevelopmentObjective {

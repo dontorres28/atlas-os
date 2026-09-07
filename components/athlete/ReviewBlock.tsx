@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import type { Athlete } from "@/lib/types";
+import type { Athlete, Evidence } from "@/lib/types";
 import { useAtlas } from "@/data/store";
 import { cyclesForAthlete } from "@/data/cycles";
 import { formatDateLong, todayISO } from "@/lib/utils";
 import { Section } from "../ui/Section";
 import { Modal } from "../ui/Modal";
 import { Field, GhostButton, PrimaryButton, Select, TextArea, TextInput } from "../ui/Field";
+import { SourceChips, SourceEditor } from "../ui/Sources";
 
 export function ReviewBlock({ athlete }: { athlete: Athlete }) {
   const reviewsFor = useAtlas((s) => s.reviewsFor);
@@ -23,6 +24,7 @@ export function ReviewBlock({ athlete }: { athlete: Athlete }) {
   const [priority, setPriority] = useState(athlete.developmentPriority);
   const [next, setNext] = useState("");
   const [cycleId, setCycleId] = useState<string>("");
+  const [sources, setSources] = useState<Evidence[]>([]);
 
   function submit() {
     if (!assessment.trim()) return;
@@ -34,10 +36,12 @@ export function ReviewBlock({ athlete }: { athlete: Athlete }) {
       developmentPriority: priority.trim(),
       nextReviewDate: next || undefined,
       cycleId: cycleId || undefined,
+      sources: sources.length ? sources : undefined,
     });
     setAssessment("");
     setNext("");
     setCycleId("");
+    setSources([]);
     setOpen(false);
   }
 
@@ -64,6 +68,14 @@ export function ReviewBlock({ athlete }: { athlete: Athlete }) {
             </div>
           </div>
           <MetaRow k="Development priority" v={latest.developmentPriority} />
+          {latest.sources?.length ? (
+            <div className="grid grid-cols-12 gap-4 border-t border-hairline py-5">
+              <div className="col-span-3 label">Sources</div>
+              <div className="col-span-9">
+                <SourceChips sources={latest.sources} />
+              </div>
+            </div>
+          ) : null}
           {list.length > 1 ? (
             <details className="mt-8 border-t border-hairline">
               <summary className="cursor-pointer py-5 text-[13px] tracking-tightish text-bone-400 hover:text-white">
@@ -139,6 +151,7 @@ export function ReviewBlock({ athlete }: { athlete: Athlete }) {
               </Select>
             </Field>
           ) : null}
+          <SourceEditor value={sources} onChange={setSources} />
           <div className="mt-8 flex items-center justify-end gap-3">
             <GhostButton onClick={() => setOpen(false)}>Cancel</GhostButton>
             <PrimaryButton onClick={submit} disabled={!assessment.trim()}>

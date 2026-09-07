@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import type { Athlete, Position, PositionGroup, SquadStatus, SquadTeam } from "@/lib/types";
+import type { Athlete, Evidence, Position, PositionGroup, SquadStatus, SquadTeam } from "@/lib/types";
 
 export type NewAthlete = {
   name: string;
@@ -21,17 +21,47 @@ export type PathwayNote = {
   status: "Ready" | "On Track" | "At Risk" | "Blocked";
   nextStep?: string;
   blocker?: string;
+  sources?: Evidence[];
 };
+
+/**
+ * A prospect the club is tracking but hasn't signed. Not part of the
+ * roster, not part of any pathway — just on the radar. Sporting director
+ * moves them through Monitoring → Interested → Contacted → Passed as the
+ * scouting picture develops.
+ */
+export type WatchStatus = "Monitoring" | "Interested" | "Contacted" | "Passed";
+
+export type WatchedPlayer = {
+  id: string;
+  name: string;
+  position: Position;
+  age: number;
+  currentClub: string;
+  contractExpiry?: string; // ISO date — when they might become available
+  status: WatchStatus;
+  fit?: "High" | "Medium" | "Low"; // rough eyeball fit vs our need
+  briefCode?: string; // optional link to a recruitment brief
+  notes?: string;
+  sources?: Evidence[];
+  addedAt: string; // ISO date
+};
+
+export type NewWatchedPlayer = Omit<WatchedPlayer, "id" | "addedAt">;
 
 type UserStore = {
   hydrated: boolean;
   athletes: Athlete[];
   pathwayNotes: Record<string, PathwayNote>;
+  watchlist: WatchedPlayer[];
   addAthlete: (input: NewAthlete) => Athlete;
   updateAthlete: (id: string, patch: Partial<NewAthlete>) => Athlete | undefined;
   removeAthlete: (id: string) => void;
   importAthletes: (list: NewAthlete[]) => Athlete[];
   setPathwayNote: (id: string, note: PathwayNote) => void;
+  addWatched: (input: NewWatchedPlayer) => WatchedPlayer;
+  updateWatched: (id: string, patch: Partial<NewWatchedPlayer>) => WatchedPlayer | undefined;
+  removeWatched: (id: string) => void;
   clearAthletes: () => void;
   markHydrated: () => void;
 };
@@ -113,6 +143,7 @@ export const useUserStore = create<UserStore>()(
       hydrated: false,
       athletes: [],
       pathwayNotes: {},
+      watchlist: [],
 
       addAthlete: (input) => {
         const code = nextCode(get().athletes);
@@ -194,7 +225,34 @@ export const useUserStore = create<UserStore>()(
         set((s) => ({ pathwayNotes: { ...s.pathwayNotes, [id]: note } }));
       },
 
-      clearAthletes: () => set({ athletes: [], pathwayNotes: {} }),
+      addWatched: (input) => {
+        const rec: WatchedPlayer = {
+          ...input,
+          id: uid("wp"),
+          addedAt: new Date().toISOString().slice(0, 10),
+        };
+        set((s) => ({ watchlist: [...s.watchlist, rec] }));
+        return rec;
+      },
+
+      updateWatched: (id, patch) => {
+        let updated: WatchedPlayer | undefined;
+        set((s) => ({
+          watchlist: s.watchlist.map((w) => {
+            if (w.id !== id) return w;
+            const next = { ...w, ...patch };
+            updated = next;
+            return next;
+          }),
+        }));
+        return updated;
+      },
+
+      removeWatched: (id) => {
+        set((s) => ({ watchlist: s.watchlist.filter((w) => w.id !== id) }));
+      },
+
+      clearAthletes: () => set({ athletes: [], pathwayNotes: {}, watchlist: [] }),
       markHydrated: () => set({ hydrated: true }),
     }),
     {
@@ -202,7 +260,11 @@ export const useUserStore = create<UserStore>()(
       version: 2,
       storage: createJSONStorage(() => localStorage),
       skipHydration: true,
-      partialize: (s) => ({ athletes: s.athletes, pathwayNotes: s.pathwayNotes }),
+      partialize: (s) => ({
+        athletes: s.athletes,
+        pathwayNotes: s.pathwayNotes,
+        watchlist: s.watchlist,
+      }),
     },
   ),
 );

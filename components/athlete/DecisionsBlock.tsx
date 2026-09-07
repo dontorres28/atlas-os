@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import type { Athlete, DecisionArea, DecisionStatus } from "@/lib/types";
+import type { Athlete, DecisionArea, DecisionStatus, Evidence } from "@/lib/types";
 import { useAtlas } from "@/data/store";
 import { cyclesForAthlete } from "@/data/cycles";
 import { formatDateLong, todayISO } from "@/lib/utils";
 import { Section } from "../ui/Section";
 import { Modal } from "../ui/Modal";
 import { Field, GhostButton, PrimaryButton, Select, TextArea, TextInput } from "../ui/Field";
+import { SourceChips, SourceEditor } from "../ui/Sources";
 
 const AREAS: DecisionArea[] = ["Contract", "Pathway", "Development", "Role", "Loan"];
 const STATUSES: DecisionStatus[] = ["Pending", "Active", "Confirmed", "Deferred", "Rejected"];
@@ -46,6 +47,7 @@ export function DecisionsBlock({ athlete }: { athlete: Athlete }) {
   const [reviewDate, setReviewDate] = useState("");
   const [cycleId, setCycleId] = useState<string>("");
   const [status, setStatus] = useState<DecisionStatus>("Active");
+  const [sources, setSources] = useState<Evidence[]>([]);
 
   function submit() {
     if (!summary.trim()) return;
@@ -60,12 +62,14 @@ export function DecisionsBlock({ athlete }: { athlete: Athlete }) {
       reviewDate: reviewDate || undefined,
       cycleId: cycleId || undefined,
       status,
+      sources: sources.length ? sources : undefined,
     });
     setSummary("");
     setRationale("");
     setExpected("");
     setReviewDate("");
     setCycleId("");
+    setSources([]);
     setOpen(false);
   }
 
@@ -134,6 +138,17 @@ export function DecisionsBlock({ athlete }: { athlete: Athlete }) {
                       : "Awaiting outcome."}
                   </span>
                 </div>
+
+                {d.sources?.length ? (
+                  <div className="mt-4 grid grid-cols-12 gap-4">
+                    <span className="col-span-2 text-[10px] uppercase tracking-[0.18em] text-bone-500">
+                      Sources
+                    </span>
+                    <div className="col-span-10">
+                      <SourceChips sources={d.sources} />
+                    </div>
+                  </div>
+                ) : null}
               </Link>
             </li>
           ))}
@@ -211,6 +226,7 @@ export function DecisionsBlock({ athlete }: { athlete: Athlete }) {
               ))}
             </Select>
           </Field>
+          <SourceEditor value={sources} onChange={setSources} />
           <div className="mt-8 flex items-center justify-end gap-3">
             <GhostButton onClick={() => setOpen(false)}>Cancel</GhostButton>
             <PrimaryButton onClick={submit} disabled={!summary.trim()}>

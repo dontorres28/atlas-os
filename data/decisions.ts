@@ -15,6 +15,10 @@ export const seedDecisions: Decision[] = [
     reviewDate: "2027-01-15",
     cycleId: "cyc_c01",
     status: "Active",
+    sources: [
+      { label: "Rev-001, 2026-08-12 debrief" },
+      { label: "B-team season summary" },
+    ],
   },
   {
     id: "dec_002",

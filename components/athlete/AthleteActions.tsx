@@ -3,10 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
-import type { Athlete } from "@/lib/types";
+import type { Athlete, Evidence } from "@/lib/types";
 import { useUserStore, type PathwayNote } from "@/data/user-store";
 import { GhostButton, PrimaryButton, Select, TextInput } from "@/components/ui/Field";
 import { Modal } from "@/components/ui/Modal";
+import { SourceChips, SourceEditor } from "@/components/ui/Sources";
 import { AthleteFormModal } from "@/components/squad/AthleteFormModal";
 
 const STATUSES: PathwayNote["status"][] = ["Ready", "On Track", "At Risk", "Blocked"];
@@ -32,6 +33,7 @@ export function AthleteActions({ athlete }: { athlete: Athlete }) {
   const status = note?.status ?? "On Track";
   const nextStep = note?.nextStep ?? "";
   const blocker = note?.blocker ?? "";
+  const sources = note?.sources ?? [];
 
   function remove() {
     removeAthlete(athlete.id);
@@ -43,6 +45,7 @@ export function AthleteActions({ athlete }: { athlete: Athlete }) {
       status: patch.status ?? status,
       nextStep: patch.nextStep ?? nextStep,
       blocker: patch.blocker ?? blocker,
+      sources: patch.sources ?? sources,
     });
   }
 
@@ -96,6 +99,14 @@ export function AthleteActions({ athlete }: { athlete: Athlete }) {
             placeholder="Anything stopping them from moving forward?"
           />
         </label>
+      </div>
+
+      <div className="mt-10">
+        <SourceEditor
+          value={sources}
+          onChange={(next) => updateNote({ sources: next })}
+          label="Evidence for this status"
+        />
       </div>
 
       <div className="mt-14 border-t border-hairline pt-10">

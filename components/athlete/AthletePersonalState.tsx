@@ -48,7 +48,7 @@ export function AthletePersonalState({ athlete }: { athlete: Athlete }) {
   ];
 
   return (
-    <section className="grid grid-cols-1 gap-x-16 gap-y-12 border-b border-hairline pb-16 pt-2 md:grid-cols-12">
+    <section className="structural-surface mt-10 grid grid-cols-1 gap-x-12 gap-y-8 p-6 md:grid-cols-12 md:p-10">
       <div className="md:col-span-6">
         <div className="relative mx-auto aspect-square max-w-[260px]">
           <svg viewBox="0 0 200 200" className="h-full w-full">

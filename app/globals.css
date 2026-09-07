@@ -325,6 +325,59 @@ body::before {
   transform: scale(0.97);
 }
 
+/*
+ * Skeleton loader — layout-matching placeholder with a subtle shimmer.
+ * Better than a spinner because it reserves space and cues the shape
+ * of what's coming. Reduced-motion drops the shimmer to a flat tint.
+ */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(197, 203, 216, 0.08);
+  border-radius: 6px;
+  color: transparent;
+  user-select: none;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(197, 203, 216, 0.06) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+[data-theme="light"] .skeleton {
+  background: rgba(20, 30, 43, 0.06);
+}
+
+[data-theme="light"] .skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(20, 30, 43, 0.05) 50%,
+    transparent 100%
+  );
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    display: none;
+  }
+}
+
 .liquid-glass {
   background: linear-gradient(180deg, var(--glass-a) 0%, var(--glass-b) 100%);
   -webkit-backdrop-filter: blur(28px) saturate(150%);

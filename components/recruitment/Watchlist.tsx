@@ -5,6 +5,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { useUserStore, type WatchStatus, type WatchedPlayer } from "@/data/user-store";
 import { PrimaryButton } from "@/components/ui/Field";
 import { SourceChips } from "@/components/ui/Sources";
+import { Skeleton, SkeletonRow } from "@/components/ui/Skeleton";
 import { WatchedPlayerModal } from "./WatchedPlayerModal";
 
 /**
@@ -30,7 +31,22 @@ export function Watchlist() {
   );
 
   if (!hydrated) {
-    return <section className="border-t border-hairline py-16" aria-busy="true" />;
+    return (
+      <section
+        className="structural-surface p-6 md:p-8"
+        aria-busy="true"
+      >
+        <div className="flex items-baseline justify-between">
+          <Skeleton height={22} width={200} />
+          <Skeleton height={32} width={130} radius={999} />
+        </div>
+        <div className="mt-8 flex flex-col gap-2">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <SkeletonRow key={i} />
+          ))}
+        </div>
+      </section>
+    );
   }
 
   return (

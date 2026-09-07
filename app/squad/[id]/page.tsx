@@ -8,6 +8,7 @@ import { AthletePersonalState } from "@/components/athlete/AthletePersonalState"
 import { AthleteActions } from "@/components/athlete/AthleteActions";
 import { ReviewBlock } from "@/components/athlete/ReviewBlock";
 import { DecisionsBlock } from "@/components/athlete/DecisionsBlock";
+import { AthleteSkeleton } from "@/components/athlete/AthleteSkeleton";
 
 export default function AthletePage() {
   const params = useParams<{ id: string }>();
@@ -17,7 +18,7 @@ export default function AthletePage() {
   // Wait for the user store to hydrate before deciding the athlete is missing.
   // Otherwise a hard reload on a user-owned athlete route flashes 404.
   if (!athlete) {
-    if (!userHydrated) return <div className="min-h-screen" aria-busy="true" />;
+    if (!userHydrated) return <AthleteSkeleton />;
     return notFound();
   }
 

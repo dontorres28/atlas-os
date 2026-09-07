@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { Plus, Upload } from "lucide-react";
 import { athletes as seedAthletes } from "@/data/athletes";
 import { getPathway } from "@/data/pathways";
-import { useRoster } from "@/data/use-roster";
+import { useRoster, useRosterHydrated } from "@/data/use-roster";
 import { useOnboarding } from "@/data/onboarding";
 import { useUserStore } from "@/data/user-store";
 import { Segmented } from "@/components/ui/Segmented";
@@ -13,6 +13,7 @@ import { PrimaryButton, GhostButton } from "@/components/ui/Field";
 import { cn } from "@/lib/utils";
 import { AddAthleteModal } from "./AddAthleteModal";
 import { ImportRosterModal } from "./ImportRosterModal";
+import { SquadSkeleton } from "./SquadSkeleton";
 
 type Filter = "All" | "First Team" | "U21" | "U19" | "Loan";
 const FILTERS: Filter[] = ["All", "First Team", "U21", "U19", "Loan"];
@@ -34,12 +35,15 @@ export function SquadComposition() {
   const [addOpen, setAddOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
 
+  const hydrated = useRosterHydrated();
   const roster = useRoster();
   const demoMode = useOnboarding((s) => s.demoMode);
   const setDemoMode = useOnboarding((s) => s.setDemoMode);
   const pathwayNotes = useUserStore((s) => s.pathwayNotes);
 
   const rows = useMemo(() => roster.filter((a) => matches(filter, a)), [roster, filter]);
+
+  if (!hydrated) return <SquadSkeleton />;
 
   if (roster.length === 0) {
     return (

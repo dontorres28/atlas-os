@@ -24,3 +24,14 @@ export function useRoster(): Athlete[] {
 
   return demoMode ? seedAthletes : userAthletes;
 }
+
+/**
+ * True once both the onboarding store and the user store have
+ * hydrated from localStorage. Use this to swap skeleton loaders for
+ * real content only when the answer is genuinely known.
+ */
+export function useRosterHydrated(): boolean {
+  const onboardingHydrated = useOnboarding((s) => s.hydrated);
+  const userHydrated = useUserStore((s) => s.hydrated);
+  return onboardingHydrated && userHydrated;
+}

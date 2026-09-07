@@ -62,6 +62,10 @@ type UserStore = {
   addWatched: (input: NewWatchedPlayer) => WatchedPlayer;
   updateWatched: (id: string, patch: Partial<NewWatchedPlayer>) => WatchedPlayer | undefined;
   removeWatched: (id: string) => void;
+  /** Re-insert a previously removed athlete verbatim (for Undo). */
+  restoreAthlete: (athlete: Athlete, note?: PathwayNote) => void;
+  /** Re-insert a previously removed watched player verbatim (for Undo). */
+  restoreWatched: (watched: WatchedPlayer) => void;
   clearAthletes: () => void;
   markHydrated: () => void;
 };
@@ -250,6 +254,25 @@ export const useUserStore = create<UserStore>()(
 
       removeWatched: (id) => {
         set((s) => ({ watchlist: s.watchlist.filter((w) => w.id !== id) }));
+      },
+
+      restoreAthlete: (athlete, note) => {
+        set((s) => {
+          if (s.athletes.some((a) => a.id === athlete.id)) return s;
+          return {
+            athletes: [...s.athletes, athlete],
+            pathwayNotes: note
+              ? { ...s.pathwayNotes, [athlete.id]: note }
+              : s.pathwayNotes,
+          };
+        });
+      },
+
+      restoreWatched: (watched) => {
+        set((s) => {
+          if (s.watchlist.some((w) => w.id === watched.id)) return s;
+          return { watchlist: [...s.watchlist, watched] };
+        });
       },
 
       clearAthletes: () => set({ athletes: [], pathwayNotes: {}, watchlist: [] }),

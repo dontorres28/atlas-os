@@ -6,6 +6,7 @@ import { useUserStore, type WatchStatus, type WatchedPlayer } from "@/data/user-
 import { PrimaryButton } from "@/components/ui/Field";
 import { SourceChips } from "@/components/ui/Sources";
 import { Skeleton, SkeletonRow } from "@/components/ui/Skeleton";
+import { useUndoToast } from "@/components/ui/UndoToast";
 import { WatchedPlayerModal } from "./WatchedPlayerModal";
 
 /**
@@ -21,9 +22,19 @@ export function Watchlist() {
   const watchlist = useUserStore((s) => s.watchlist);
   const hydrated = useUserStore((s) => s.hydrated);
   const removeWatched = useUserStore((s) => s.removeWatched);
+  const restoreWatched = useUserStore((s) => s.restoreWatched);
+  const undoToast = useUndoToast();
 
   const [addOpen, setAddOpen] = useState(false);
   const [editing, setEditing] = useState<WatchedPlayer | null>(null);
+
+  function remove(w: WatchedPlayer) {
+    removeWatched(w.id);
+    undoToast.show({
+      message: `${w.name} removed from watchlist`,
+      onUndo: () => restoreWatched(w),
+    });
+  }
 
   const sorted = useMemo(
     () => [...watchlist].sort((a, b) => statusOrder(a.status) - statusOrder(b.status)),
@@ -110,9 +121,7 @@ export function Watchlist() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (confirm(`Remove ${w.name} from the watchlist?`)) {
-                      removeWatched(w.id);
-                    }
+                    remove(w);
                   }}
                   className="shrink-0 text-bone-500 opacity-0 transition-opacity hover:text-signal-rose group-hover:opacity-100"
                   aria-label={`Remove ${w.name}`}

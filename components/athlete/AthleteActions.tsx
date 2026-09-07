@@ -3,11 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
-import type { Athlete, Evidence } from "@/lib/types";
+import type { Athlete } from "@/lib/types";
 import { useUserStore, type PathwayNote } from "@/data/user-store";
 import { GhostButton, PrimaryButton, Select, TextInput } from "@/components/ui/Field";
-import { Modal } from "@/components/ui/Modal";
-import { SourceChips, SourceEditor } from "@/components/ui/Sources";
+import { SourceEditor } from "@/components/ui/Sources";
+import { useUndoToast } from "@/components/ui/UndoToast";
 import { AthleteFormModal } from "@/components/squad/AthleteFormModal";
 
 const STATUSES: PathwayNote["status"][] = ["Ready", "On Track", "At Risk", "Blocked"];
@@ -18,11 +18,12 @@ const STATUSES: PathwayNote["status"][] = ["Ready", "On Track", "At Risk", "Bloc
  */
 export function AthleteActions({ athlete }: { athlete: Athlete }) {
   const router = useRouter();
-  const [confirmOpen, setConfirmOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const undoToast = useUndoToast();
 
   const userAthletes = useUserStore((s) => s.athletes);
   const removeAthlete = useUserStore((s) => s.removeAthlete);
+  const restoreAthlete = useUserStore((s) => s.restoreAthlete);
   const pathwayNotes = useUserStore((s) => s.pathwayNotes);
   const setPathwayNote = useUserStore((s) => s.setPathwayNote);
 
@@ -36,8 +37,18 @@ export function AthleteActions({ athlete }: { athlete: Athlete }) {
   const sources = note?.sources ?? [];
 
   function remove() {
+    // Commit immediately; the toast is the safety net (Apple §16 Agency).
+    const snapshotAthlete = athlete;
+    const snapshotNote = note;
     removeAthlete(athlete.id);
     router.replace("/squad");
+    undoToast.show({
+      message: `${snapshotAthlete.name} removed`,
+      onUndo: () => {
+        restoreAthlete(snapshotAthlete, snapshotNote);
+        router.push(`/squad/${snapshotAthlete.id}`);
+      },
+    });
   }
 
   function updateNote(patch: Partial<PathwayNote>) {
@@ -118,7 +129,7 @@ export function AthleteActions({ athlete }: { athlete: Athlete }) {
             <Pencil size={12} strokeWidth={1.6} />
             Edit
           </PrimaryButton>
-          <GhostButton onClick={() => setConfirmOpen(true)}>
+          <GhostButton onClick={remove}>
             <Trash2 size={12} strokeWidth={1.6} />
             Remove athlete
           </GhostButton>
@@ -130,24 +141,6 @@ export function AthleteActions({ athlete }: { athlete: Athlete }) {
         onClose={() => setEditOpen(false)}
         initial={athlete}
       />
-
-      <Modal
-        open={confirmOpen}
-        onClose={() => setConfirmOpen(false)}
-        section="Squad"
-        title="Remove athlete"
-      >
-        <p className="text-[15px] leading-relaxed tracking-tightish text-bone-100">
-          Remove <span className="text-white">{athlete.name}</span> from the squad?
-        </p>
-        <p className="mt-3 text-[13px] leading-relaxed text-bone-400">
-          This cannot be undone. Reviews and decisions recorded against them stay in the ledger.
-        </p>
-        <div className="mt-8 flex items-center justify-end gap-3">
-          <GhostButton onClick={() => setConfirmOpen(false)}>Cancel</GhostButton>
-          <PrimaryButton onClick={remove}>Remove</PrimaryButton>
-        </div>
-      </Modal>
     </section>
   );
 }

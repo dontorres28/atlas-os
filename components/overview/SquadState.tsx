@@ -160,7 +160,7 @@ export function SquadState() {
                 </div>
               ) : (
                 <div className="text-[14px] leading-relaxed tracking-tightish text-bone-300">
-                  Hover a signal to see what's inside it.
+                  Tap a signal to see what&rsquo;s inside it.
                 </div>
               )}
             </motion.div>

@@ -155,7 +155,7 @@ export function PathwayProgression() {
       <aside className="sticky top-8 hidden self-start md:block">
         <div className="pill-glass rounded-2xl p-6">
           <div className="text-[10px] font-medium uppercase tracking-[0.22em] text-bone-500">
-            {hoveredAthlete ? "Athlete" : "Hover a dot"}
+            {hoveredAthlete ? "Athlete" : "Tap a dot"}
           </div>
           {hoveredAthlete && hoveredPathway ? (
             <div className="mt-4">

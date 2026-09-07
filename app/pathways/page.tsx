@@ -4,7 +4,7 @@ import { PathwayProgression } from "@/components/pathway/PathwayProgression";
 export default function PathwaysPage() {
   return (
     <>
-      <ModuleHeader title="Pathways" />
+      <ModuleHeader title="Development" />
       <PathwayProgression />
     </>
   );

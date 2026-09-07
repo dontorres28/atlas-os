@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { LayoutGrid, Users, GitBranch, ScrollText } from "lucide-react";
+import { LayoutGrid, Users, GitBranch, ScrollText, Search, ClipboardCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/", label: "Overview", Icon: LayoutGrid },
   { href: "/squad", label: "Squad", Icon: Users },
-  { href: "/pathways", label: "Pathways", Icon: GitBranch },
+  { href: "/pathways", label: "Development", Icon: GitBranch },
   { href: "/decisions", label: "Decisions", Icon: ScrollText },
+  { href: "/recruitment", label: "Recruitment", Icon: Search },
+  { href: "/reviews", label: "Reviews", Icon: ClipboardCheck },
 ];
 
 const SPRING = {
@@ -40,7 +42,7 @@ export function BottomNav() {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "group relative flex items-center gap-2.5 rounded-full px-4 py-2.5 text-[13px] tracking-tightish transition-colors duration-300 ease-atlas",
+                "group relative flex items-center gap-2 rounded-full px-3 py-2.5 text-[13px] tracking-tightish transition-colors duration-300 ease-atlas sm:gap-2.5 sm:px-4",
                 active ? "" : "text-bone-300 hover:text-white",
               )}
               style={active ? { color: "#FEFEFE" } : undefined}
@@ -58,7 +60,7 @@ export function BottomNav() {
                   }}
                 />
               ) : null}
-              <span className="relative z-10 flex items-center gap-2.5">
+              <span className="relative z-10 flex items-center gap-2 sm:gap-2.5">
                 <item.Icon
                   size={13}
                   strokeWidth={1.5}
@@ -68,7 +70,7 @@ export function BottomNav() {
                   )}
                   style={active ? { color: "#FEFEFE" } : undefined}
                 />
-                <span>{item.label}</span>
+                <span className="hidden sm:inline">{item.label}</span>
               </span>
             </Link>
           );

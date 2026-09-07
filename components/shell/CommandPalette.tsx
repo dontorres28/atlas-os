@@ -17,17 +17,13 @@ type Result =
   | { kind: "nav"; id: string; label: string; sub: string; href: string };
 
 const NAV_ITEMS: Result[] = [
-  { kind: "nav", id: "n1", label: "Overview", sub: "Sporting Director home", href: "/" },
+  { kind: "nav", id: "n1", label: "Overview", sub: "What needs your attention today", href: "/" },
   { kind: "nav", id: "n2", label: "Squad", sub: "First Team and Academy", href: "/squad" },
-  { kind: "nav", id: "n3", label: "Pathways", sub: "Progression map", href: "/pathways" },
-  { kind: "nav", id: "n4", label: "Cycles", sub: "Sporting calendar", href: "/cycles" },
-  { kind: "nav", id: "n5", label: "Reviews", sub: "What the club currently thinks", href: "/reviews" },
-  { kind: "nav", id: "n6", label: "Decisions", sub: "Decision ledger", href: "/decisions" },
-  { kind: "nav", id: "n7", label: "Planning", sub: "Squad 2027 / 28", href: "/planning" },
-  { kind: "nav", id: "n8", label: "Loans", sub: "Trajectory tracking", href: "/loans" },
-  { kind: "nav", id: "n9", label: "Recruitment", sub: "Open sporting briefs", href: "/recruitment" },
-  { kind: "nav", id: "n10", label: "Memory", sub: "Club sporting history", href: "/memory" },
-  { kind: "nav", id: "n11", label: "Methodology", sub: "How the club defines readiness", href: "/methodology" },
+  { kind: "nav", id: "n3", label: "Development", sub: "Where every athlete is heading", href: "/pathways" },
+  { kind: "nav", id: "n4", label: "Decisions", sub: "What the club decided, and why", href: "/decisions" },
+  { kind: "nav", id: "n5", label: "Recruitment", sub: "Open briefs and the watchlist", href: "/recruitment" },
+  { kind: "nav", id: "n6", label: "Reviews", sub: "What the club currently thinks", href: "/reviews" },
+  { kind: "nav", id: "n7", label: "Cycles", sub: "The sporting calendar", href: "/cycles" },
 ];
 
 export function CommandPalette({

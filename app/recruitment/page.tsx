@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ModuleHeader } from "@/components/ui/ModuleHeader";
 import { briefs, briefAthletes } from "@/data/recruitment";
+import { Watchlist } from "@/components/recruitment/Watchlist";
 
 export default function RecruitmentPage() {
   return (
@@ -143,6 +144,8 @@ export default function RecruitmentPage() {
             </section>
           );
         })}
+
+        <Watchlist />
       </div>
     </>
   );

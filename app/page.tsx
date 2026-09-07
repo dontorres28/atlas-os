@@ -24,18 +24,17 @@ export default function OverviewPage() {
         <>
           <StateLine />
 
-          <section className="grid grid-cols-1 gap-x-16 gap-y-4 pt-6 md:grid-cols-12">
-            <div className="md:col-span-8">
-              <SquadState />
-            </div>
-            <div className="md:col-span-4">
-              <Today />
-            </div>
+          {/* Today comes first — it's the one reason a Sporting Director
+              opens Atlas today. The SquadState gauge is a vital sign that
+              sits underneath, not the headline. */}
+          <div className="pt-6">
+            <Today />
+          </div>
+
+          <section className="pt-4">
+            <SquadState />
           </section>
 
-          {/* Trend view depends on time-series history — only meaningful once
-              enough data has accumulated. Shown in demo mode; hidden in fresh
-              mode until we ship persistence to back it. */}
           {demoMode && <SquadTrend />}
         </>
       )}

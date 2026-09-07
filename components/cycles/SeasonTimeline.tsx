@@ -79,7 +79,7 @@ export function SeasonTimeline() {
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -4 }}
-          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ type: "spring", bounce: 0, duration: 0.28 }}
           className="structural-surface p-6 md:p-8"
         >
           <CycleDetail cycleId={active.id} />

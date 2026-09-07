@@ -43,7 +43,7 @@ export function ThemeToggle() {
           key={isLight ? "sun" : "moon"}
           initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
           animate={{ opacity: 1, rotate: 0, scale: 1 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ type: "spring", bounce: 0.15, duration: 0.35 }}
         >
           {isLight ? (
             <Sun size={13} strokeWidth={2} color="#FEFEFE" />

@@ -112,7 +112,7 @@ export function ReviewRoom() {
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1], delay: Math.min(i, 12) * 0.02 }}
+                transition={{ type: "spring", bounce: 0, duration: 0.28, delay: Math.min(i, 12) * 0.02 }}
               >
                 <Link
                   href={`/squad/${a.id}`}

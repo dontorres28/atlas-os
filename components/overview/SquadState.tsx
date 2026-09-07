@@ -96,7 +96,7 @@ export function SquadState() {
                 initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: -4, filter: "blur(4px)" }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ type: "spring", bounce: 0, duration: 0.3 }}
                 className="flex flex-col items-center"
               >
                 <div className="display text-[100px] leading-none tracking-tightest text-white md:text-[124px]">

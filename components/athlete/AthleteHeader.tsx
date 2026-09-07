@@ -1,17 +1,10 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import type { Athlete } from "@/lib/types";
+import { BackLink } from "@/components/ui/BackLink";
 
 export function AthleteHeader({ athlete }: { athlete: Athlete }) {
   return (
     <div className="atlas-enter border-b border-hairline pb-16 pt-14">
-      <Link
-        href="/squad"
-        className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-bone-500 transition-colors hover:text-white"
-      >
-        <ArrowLeft size={11} strokeWidth={1.4} />
-        Squad
-      </Link>
+      <BackLink href="/squad" label="Squad" />
 
       <div className="mt-10 text-[11px] font-medium uppercase tracking-[0.22em] text-accent-tint">
         Athlete

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { BackLink } from "@/components/ui/BackLink";
 import { athletesAtStage, pathwayStages, stageOf } from "@/data/pathways";
 import { athletes } from "@/data/athletes";
 
@@ -29,18 +30,13 @@ export default function StagePage({ params }: { params: { key: string } }) {
 
   return (
     <>
+      <div className="pt-6">
+        <BackLink href="/pathways" label="Development" />
+      </div>
       <PageHeader
-        section="Pathway"
+        section="Stage"
         title={stage.label}
         meta={`${rows.length} athletes currently at this stage. ${stage.isSenior ? "Senior football." : "Development football."}`}
-        actions={
-          <Link
-            href="/pathways"
-            className="text-[11px] uppercase tracking-[0.16em] text-bone-400 hover:text-white"
-          >
-            All pathways
-          </Link>
-        }
       />
 
       <div className="grid grid-cols-2 gap-6 border-b border-hairline py-10 md:grid-cols-4">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { notFound, useParams } from "next/navigation";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { BackLink } from "@/components/ui/BackLink";
 import { getCycle, cycleStatesFor } from "@/data/cycles";
 import { athletes } from "@/data/athletes";
 import { useAtlas } from "@/data/store";
@@ -42,18 +43,13 @@ export default function CycleDetailPage() {
 
   return (
     <>
+      <div className="pt-6">
+        <BackLink href="/cycles" label="Cycles" />
+      </div>
       <PageHeader
         section="Cycle"
         title={cycle.name}
         meta={`${cycle.type}. ${cycle.monthLabel.charAt(0) + cycle.monthLabel.slice(1).toLowerCase()} ${cycle.season}. Owned by ${cycle.owner}.`}
-        actions={
-          <Link
-            href="/cycles"
-            className="text-[11px] uppercase tracking-[0.16em] text-bone-400 hover:text-white"
-          >
-            All cycles
-          </Link>
-        }
       />
 
       <div className="grid grid-cols-2 gap-6 border-b border-hairline py-10 md:grid-cols-4 md:gap-8">

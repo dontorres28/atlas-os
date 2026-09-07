@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useState } from "react";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { BackLink } from "@/components/ui/BackLink";
 import { useAtlas } from "@/data/store";
 import { athletes } from "@/data/athletes";
 import { getCycle } from "@/data/cycles";
@@ -51,18 +52,13 @@ export default function DecisionDetail() {
 
   return (
     <>
+      <div className="pt-6">
+        <BackLink href="/decisions" label="Decisions" />
+      </div>
       <PageHeader
         section={`Decision ${decision.code}`}
         title={decision.summary}
         meta={`${decision.area}. Owned by ${decision.owner}. Recorded ${formatDateLong(decision.date)}.`}
-        actions={
-          <Link
-            href="/decisions"
-            className="text-[11px] uppercase tracking-[0.16em] text-bone-400 hover:text-white"
-          >
-            Ledger
-          </Link>
-        }
       />
 
       {overdue ? (

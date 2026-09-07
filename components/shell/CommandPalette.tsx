@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 import { athletes } from "@/data/athletes";
 import { useAtlas } from "@/data/store";
 import { seedCycles } from "@/data/cycles";
@@ -152,68 +151,61 @@ export function CommandPalette({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, results, active, onClose, router]);
 
+  // Palette is keyboard-triggered (⌘K) and used many times per day.
+  // Emil's rule: never animate keyboard-initiated actions — the delay
+  // makes the app feel slower than it is. Open and close instantly.
+  if (!open) return null;
+
   return (
-    <AnimatePresence>
-      {open ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-50 flex items-start justify-center bg-canvas/70 px-6 pt-[14vh] backdrop-blur-md"
-          onClick={onClose}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: -8, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -4, filter: "blur(4px)" }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            onClick={(e) => e.stopPropagation()}
-            className="liquid-glass w-full max-w-2xl rounded-2xl"
-          >
-            <div className="flex items-center gap-4 border-b border-hairline px-6 py-4">
-              <span className="label text-accent-tint">Search Atlas</span>
-              <input
-                autoFocus
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="Search athletes, decisions, reviews…"
-                className="flex-1 bg-transparent text-[15px] text-white outline-none placeholder:text-bone-500"
-              />
-              <span className="mono text-[10px] text-bone-500">ESC</span>
-            </div>
-            <div className="max-h-[52vh] overflow-y-auto">
-              {results.length === 0 ? (
-                <div className="px-6 py-12 text-center meta">No results</div>
-              ) : (
-                results.map((r, i) => (
-                  <Link
-                    key={`${r.kind}_${r.id}`}
-                    href={r.href}
-                    onClick={onClose}
-                    onMouseEnter={() => setActive(i)}
-                    className={`flex items-baseline justify-between border-b border-hairline px-6 py-4 transition-colors duration-300 ${
-                      i === active ? "bg-white/[0.04]" : ""
-                    }`}
-                  >
-                    <div className="flex items-baseline gap-4">
-                      <span className="mono w-16 text-[10px] uppercase tracking-[0.16em] text-accent-tint">
-                        {r.kind}
-                      </span>
-                      <span className="text-[14px] text-white">{r.label}</span>
-                    </div>
-                    <span className="meta">{r.sub}</span>
-                  </Link>
-                ))
-              )}
-            </div>
-            <div className="flex items-center justify-between border-t border-hairline px-6 py-3 meta">
-              <span>↑ ↓ to navigate, ↵ to open</span>
-              <span>{results.length} results</span>
-            </div>
-          </motion.div>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center bg-canvas/70 px-6 pt-[14vh] backdrop-blur-md"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="liquid-glass w-full max-w-2xl rounded-2xl"
+      >
+        <div className="flex items-center gap-4 border-b border-hairline px-6 py-4">
+          <span className="label text-accent-tint">Search Atlas</span>
+          <input
+            autoFocus
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search athletes, decisions, reviews…"
+            className="flex-1 bg-transparent text-[15px] text-white outline-none placeholder:text-bone-500"
+          />
+          <span className="mono text-[10px] text-bone-500">ESC</span>
+        </div>
+        <div className="max-h-[52vh] overflow-y-auto">
+          {results.length === 0 ? (
+            <div className="meta px-6 py-12 text-center">No results</div>
+          ) : (
+            results.map((r, i) => (
+              <Link
+                key={`${r.kind}_${r.id}`}
+                href={r.href}
+                onClick={onClose}
+                onMouseEnter={() => setActive(i)}
+                className={`flex items-baseline justify-between border-b border-hairline px-6 py-4 ${
+                  i === active ? "bg-white/[0.04]" : ""
+                }`}
+              >
+                <div className="flex items-baseline gap-4">
+                  <span className="mono w-16 text-[10px] uppercase tracking-[0.16em] text-accent-tint">
+                    {r.kind}
+                  </span>
+                  <span className="text-[14px] text-white">{r.label}</span>
+                </div>
+                <span className="meta">{r.sub}</span>
+              </Link>
+            ))
+          )}
+        </div>
+        <div className="meta flex items-center justify-between border-t border-hairline px-6 py-3">
+          <span>↑ ↓ to navigate, ↵ to open</span>
+          <span>{results.length} results</span>
+        </div>
+      </div>
+    </div>
   );
 }

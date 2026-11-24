@@ -136,8 +136,8 @@ export function SquadState() {
                     className="content-surface group flex items-center gap-4 px-4 py-3"
                   >
                     <Icon
-                      size={16}
-                      strokeWidth={1.6}
+                      size={22}
+                      strokeWidth={1.5}
                       className={`shrink-0 transition-colors ${
                         isActive ? "text-accent-tint" : "text-bone-400"
                       }`}

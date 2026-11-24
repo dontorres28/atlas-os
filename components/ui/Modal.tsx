@@ -105,7 +105,7 @@ export function Modal({
                 </div>
                 <button
                   onClick={onClose}
-                  className="text-bone-400 transition-colors hover:text-white"
+                  className="icon-btn text-bone-400 transition-colors hover:text-white"
                   aria-label="Close"
                 >
                   <X size={16} strokeWidth={1.4} />
@@ -134,7 +134,7 @@ export function Modal({
                 </div>
                 <button
                   onClick={onClose}
-                  className="text-bone-400 transition-colors hover:text-white"
+                  className="icon-btn text-bone-400 transition-colors hover:text-white"
                   aria-label="Close"
                 >
                   <X size={16} strokeWidth={1.4} />

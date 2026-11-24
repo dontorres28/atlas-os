@@ -327,7 +327,7 @@ function StepStructure() {
                 <button
                   onClick={() => remove(i)}
                   aria-label={`Remove ${stage}`}
-                  className="text-bone-500 transition-colors hover:text-signal-rose"
+                  className="icon-btn text-bone-500 transition-colors hover:text-signal-rose"
                 >
                   <X size={14} strokeWidth={1.6} />
                 </button>

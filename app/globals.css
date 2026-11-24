@@ -325,6 +325,23 @@ body::before {
   transform: scale(0.97);
 }
 
+/* HIG: visible focus ring for keyboard nav on every interactive thing. */
+:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent-tint);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* HIG: minimum 44pt touch target for icon-only buttons. Icon stays small,
+ * the button's hit area is padded out to meet the threshold. */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+}
+
 /*
  * Skeleton loader — layout-matching placeholder with a subtle shimmer.
  * Better than a spinner because it reserves space and cues the shape

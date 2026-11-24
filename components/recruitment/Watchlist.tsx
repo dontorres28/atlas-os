@@ -123,7 +123,7 @@ export function Watchlist() {
                     e.stopPropagation();
                     remove(w);
                   }}
-                  className="shrink-0 text-bone-500 opacity-0 transition-opacity hover:text-signal-rose group-hover:opacity-100"
+                  className="icon-btn shrink-0 text-bone-500 opacity-0 transition-opacity hover:text-signal-rose group-hover:opacity-100"
                   aria-label={`Remove ${w.name}`}
                 >
                   <Trash2 size={14} strokeWidth={1.4} />

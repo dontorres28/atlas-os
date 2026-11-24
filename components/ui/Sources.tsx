@@ -95,7 +95,7 @@ export function SourceEditor({
               <button
                 type="button"
                 onClick={() => remove(i)}
-                className="text-bone-500 opacity-0 transition-opacity hover:text-signal-rose group-hover:opacity-100"
+                className="icon-btn text-bone-500 opacity-0 transition-opacity hover:text-signal-rose group-hover:opacity-100"
                 aria-label="Remove source"
               >
                 <X size={12} strokeWidth={1.5} />

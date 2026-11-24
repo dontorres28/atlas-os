@@ -3,7 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { useSquadSignals } from "@/data/squad-signals";
+import { Activity, UserPlus, Users, Compass } from "lucide-react";
+import { useSquadSignals, type SquadSignalKey } from "@/data/squad-signals";
+
+const ICON: Record<SquadSignalKey, typeof Activity> = {
+  performance: Activity,
+  pathway: UserPlus,
+  squad: Users,
+  planning: Compass,
+};
 
 const CENTER = 200;
 const START_ANGLE = -135;
@@ -115,6 +123,7 @@ export function SquadState() {
           <ol className="flex flex-col gap-2">
             {signals.map((s) => {
               const isActive = activeKey === s.key;
+              const Icon = ICON[s.key];
               return (
                 <li key={s.key}>
                   <Link
@@ -126,6 +135,13 @@ export function SquadState() {
                     onFocus={() => setActiveKey(s.key)}
                     className="content-surface group flex items-center gap-4 px-4 py-3"
                   >
+                    <Icon
+                      size={16}
+                      strokeWidth={1.6}
+                      className={`shrink-0 transition-colors ${
+                        isActive ? "text-accent-tint" : "text-bone-400"
+                      }`}
+                    />
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-[14px] tracking-tightish text-white">
                         {s.label}
